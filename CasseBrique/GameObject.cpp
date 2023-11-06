@@ -22,7 +22,7 @@ int GameObject::ChangeColor(sf::Color new_color) {
 	return 0;
 }
 
-int GameObject::ChangeSize(sf::Vector2f new_size) {
+int GameObject::Resize(sf::Vector2f new_size) {
 	size = new_size;
 	return 0;
 }

@@ -19,7 +19,7 @@ public:
 	GameObject(std::string new_shape, sf::Vector2f new_size);
 	int Move(int x, int y);
 	int ChangeColor(sf::Color new_color);
-	int ChangeSize(sf::Vector2f new_size);
+	int Resize(sf::Vector2f new_size);
 	int Draw(sf::RenderWindow* window);
 	bool IsCollision(GameObject object2);
 	~GameObject();
