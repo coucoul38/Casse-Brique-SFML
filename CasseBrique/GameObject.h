@@ -1,8 +1,10 @@
 #pragma once
 #include <SFML/System/Vector2.hpp>
+#include <SFML/Graphics.hpp>
 #include <SFML/Graphics/Color.hpp>
-#include <string>
 #include <SFML/Graphics/RenderWindow.hpp>
+
+#include <string>
 
 
 class GameObject
@@ -13,8 +15,9 @@ public:
 	sf::Color color;
 	sf::Vector2f velocity;
 	float speed;
-	float rotation;
+	//float rotation;
 	std::string shape;
+	sf::RectangleShape rectangle;
 
 	sf::RenderWindow* window;
 
@@ -22,6 +25,8 @@ public:
 	void Move();
 	int Draw();
 	bool IsCollision(GameObject object2);
+
+	void Rotate(float angle);
 
 	void Update() {
 		this->Move();

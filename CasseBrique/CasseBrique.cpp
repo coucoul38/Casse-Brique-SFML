@@ -4,8 +4,11 @@
 
 int main(int argc, char** argv)
 {
+    sf::ContextSettings settings;
+    settings.antialiasingLevel = 8;
+
     //Création d'une fenêtre
-    sf::RenderWindow oWindow(sf::VideoMode(640, 480), "SFML");
+    sf::RenderWindow oWindow(sf::VideoMode(640, 480), "SFML", sf::Style::Default, settings);
 
     //Création d'un cercle de radius 100
     sf::CircleShape oCircle(100.f);
@@ -18,17 +21,10 @@ int main(int argc, char** argv)
     GameObject oGameObject("circle",size,&oWindow);
     GameObject oRectangleObject("rectangle",size,&oWindow);
 
-    //Création d'un rectangle de taille 50, 50
-    sf::RectangleShape oRectangle(sf::Vector2f(50.f, 50.f));
-    //A la position 100, 100
-    oCircle.setPosition(100.f, 100.f);
-    //Et de couleur rouge
-    oRectangle.setFillColor(sf::Color::Red);
-
 
     oRectangleObject.pos = sf::Vector2f(0, 0);
     oGameObject.pos = sf::Vector2f(0, 0);
-    oRectangleObject.velocity = sf::Vector2f(0.1f,0.1f);
+    oGameObject.velocity = sf::Vector2f(0.1f,0.1f);
 
 
     //GameLoop
@@ -46,16 +42,14 @@ int main(int argc, char** argv)
 
         //DRAW
         oWindow.clear();
-
-        //oWindow.draw(oCircle);
-        oWindow.draw(oRectangle);
         
         sf::Color color(255, 100, 200, 255);
 
         oGameObject.color = color;
 
         oRectangleObject.color = color;
-
+        oRectangleObject.Rotate(0.1f);
+        
         oRectangleObject.Update();
         oGameObject.Update();
 

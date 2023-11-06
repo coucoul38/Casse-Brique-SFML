@@ -24,7 +24,7 @@ int GameObject::Draw() {
 		window->draw(circle);
 	}
 	else if (shape == "rectangle") {
-		sf::RectangleShape rectangle = sf::RectangleShape::RectangleShape(size);
+		rectangle = sf::RectangleShape::RectangleShape(size);
 
 		rectangle.setFillColor(color);
 		rectangle.setPosition(pos);
@@ -40,6 +40,10 @@ int GameObject::Draw() {
 void GameObject::Move() {
 	pos.x += velocity.x;
 	pos.y += velocity.y;
+}
+
+void GameObject::Rotate(float angle) {
+	rectangle.rotate(angle);
 }
 
 bool GameObject::IsCollision(GameObject object2){
