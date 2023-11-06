@@ -15,8 +15,8 @@ int main(int argc, char** argv)
     oCircle.setFillColor(sf::Color::Green);
 
     sf::Vector2f size(10, 100);
-    GameObject oGameObject("circle",size);
-    GameObject oRectangleObject("rectangle",size);
+    GameObject oGameObject("circle",size,&oWindow);
+    GameObject oRectangleObject("rectangle",size,&oWindow);
 
     //Création d'un rectangle de taille 50, 50
     sf::RectangleShape oRectangle(sf::Vector2f(50.f, 50.f));
@@ -24,6 +24,12 @@ int main(int argc, char** argv)
     oCircle.setPosition(100.f, 100.f);
     //Et de couleur rouge
     oRectangle.setFillColor(sf::Color::Red);
+
+
+    oRectangleObject.pos = sf::Vector2f(0, 0);
+    oGameObject.pos = sf::Vector2f(0, 0);
+    oRectangleObject.velocity = sf::Vector2f(0.1f,0.1f);
+
 
     //GameLoop
     while (oWindow.isOpen())
@@ -44,14 +50,14 @@ int main(int argc, char** argv)
         //oWindow.draw(oCircle);
         oWindow.draw(oRectangle);
         
-        sf::Color color(200, 200, 200, 255);
-        oGameObject.ChangeColor(color);
-        oGameObject.Move(500, 100);
-        oGameObject.Draw(&oWindow);
+        sf::Color color(255, 100, 200, 255);
 
-        oRectangleObject.ChangeColor(color);
-        oRectangleObject.Move(150, 150);
-        oRectangleObject.Draw(&oWindow);
+        oGameObject.color = color;
+
+        oRectangleObject.color = color;
+
+        oRectangleObject.Update();
+        oGameObject.Update();
 
         oWindow.display();
     }

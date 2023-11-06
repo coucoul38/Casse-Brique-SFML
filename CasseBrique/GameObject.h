@@ -11,16 +11,22 @@ public:
 	sf::Vector2f pos;
 	sf::Vector2f size;
 	sf::Color color;
-	sf::Vector2f acceleration;
+	sf::Vector2f velocity;
 	float speed;
 	float rotation;
 	std::string shape;
 
-	GameObject(std::string new_shape, sf::Vector2f new_size);
-	int Move(int x, int y);
-	int ChangeColor(sf::Color new_color);
-	int Resize(sf::Vector2f new_size);
-	int Draw(sf::RenderWindow* window);
+	sf::RenderWindow* window;
+
+	GameObject(std::string new_shape, sf::Vector2f new_size, sf::RenderWindow* new_window);
+	void Move();
+	int Draw();
 	bool IsCollision(GameObject object2);
+
+	void Update() {
+		this->Move();
+		this->Draw();
+	}
+
 	~GameObject();
 };

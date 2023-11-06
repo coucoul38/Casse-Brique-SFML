@@ -6,28 +6,13 @@
 #include <cstddef>
 #include <iostream>
 
-GameObject::GameObject(std::string new_shape, sf::Vector2f new_size) {
+GameObject::GameObject(std::string new_shape, sf::Vector2f new_size, sf::RenderWindow* new_window) {
 	shape = new_shape;
 	size = new_size;
+	window = new_window;
 }
 
-int GameObject::Move(int new_x, int new_y) {
-	pos.x = new_x;
-	pos.y = new_y;
-		return 0;
-}
-
-int GameObject::ChangeColor(sf::Color new_color) {
-	color = new_color;
-	return 0;
-}
-
-int GameObject::Resize(sf::Vector2f new_size) {
-	size = new_size;
-	return 0;
-}
-
-int GameObject::Draw(sf::RenderWindow* window) {
+int GameObject::Draw() {
 	if (shape=="circle") {
 		float radius = std::max(size.x,size.y);
 		std::size_t pointCount = 30;
@@ -50,6 +35,11 @@ int GameObject::Draw(sf::RenderWindow* window) {
 		return -1;
 	}
 	return 0;
+}
+
+void GameObject::Move() {
+	pos.x += velocity.x;
+	pos.y += velocity.y;
 }
 
 bool GameObject::IsCollision(GameObject object2){
