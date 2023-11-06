@@ -1,5 +1,6 @@
 
 #include <SFML/Graphics.hpp>
+#include "GameObject.h"
 
 int main(int argc, char** argv)
 {
@@ -13,6 +14,9 @@ int main(int argc, char** argv)
     //Et de couleur verte
     oCircle.setFillColor(sf::Color::Green);
 
+    sf::Vector2f size(10, 100);
+    GameObject oGameObject("circle",size);
+    GameObject oRectangleObject("rectangle",size);
 
     //Création d'un rectangle de taille 50, 50
     sf::RectangleShape oRectangle(sf::Vector2f(50.f, 50.f));
@@ -37,8 +41,17 @@ int main(int argc, char** argv)
         //DRAW
         oWindow.clear();
 
-        oWindow.draw(oCircle);
+        //oWindow.draw(oCircle);
         oWindow.draw(oRectangle);
+        
+        sf::Color color(200, 200, 200, 255);
+        oGameObject.ChangeColor(color);
+        oGameObject.Move(500, 100);
+        oGameObject.Draw(&oWindow);
+
+        oRectangleObject.ChangeColor(color);
+        oRectangleObject.Move(150, 150);
+        oRectangleObject.Draw(&oWindow);
 
         oWindow.display();
     }
