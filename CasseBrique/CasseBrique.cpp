@@ -49,12 +49,13 @@ int main(int argc, char** argv)
 
         oRectangleObject.color = color;
         oRectangleObject.Rotate(0.1f);
+        //oRectangleObject.rectangle.rotate(0.1f);
         
         oRectangleObject.Update();
         oGameObject.Update();
 
         rectangle.rotate(0.1f);
-        oWindow.draw(rectangle);
+        //oWindow.draw(rectangle);
 
         oWindow.display();
     }

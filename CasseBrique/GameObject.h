@@ -18,6 +18,7 @@ public:
 	//float rotation;
 	std::string shape;
 	sf::RectangleShape rectangle;
+	float rotation_angle;
 
 	sf::RenderWindow* window;
 

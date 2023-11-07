@@ -28,6 +28,7 @@ int GameObject::Draw() {
 
 		rectangle.setFillColor(color);
 		rectangle.setPosition(pos);
+		rectangle.setRotation(rotation_angle);
 
 		window->draw(rectangle);
 	}
@@ -43,7 +44,7 @@ void GameObject::Move() {
 }
 
 void GameObject::Rotate(float angle) {
-	rectangle.rotate(angle);
+	rotation_angle += angle;
 }
 
 bool GameObject::IsCollision(GameObject object2){
