@@ -30,3 +30,11 @@
 *.app
 
 *.opendb
+
+
+CasseBrique/x64/
+CasseBrique/.vs/
+CasseBrique/x64/Debug/CasseBrique.ilk
+CasseBrique/x64/Debug/CasseBrique.ilk
+CasseBrique/x64/Debug/CasseBrique.log
+CasseBrique/x64/Debug/vc143.pdb
