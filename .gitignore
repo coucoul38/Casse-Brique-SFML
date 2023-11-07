@@ -31,7 +31,5 @@
 
 *.opendb
 
-CasseBrique\.vs\
 CasseBrique/.vs/
-CasseBrique\x64\
 CasseBrique/x64/
