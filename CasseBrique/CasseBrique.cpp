@@ -20,7 +20,7 @@ int main(int argc, char** argv)
     sf::Vector2f size(10, 100);
     GameObject oGameObject("circle",size,&oWindow);
     GameObject oRectangleObject("rectangle",size,&oWindow);
-
+    sf::RectangleShape rectangle(size);
 
     oRectangleObject.pos = sf::Vector2f(0, 0);
     oGameObject.pos = sf::Vector2f(0, 0);
@@ -52,6 +52,9 @@ int main(int argc, char** argv)
         
         oRectangleObject.Update();
         oGameObject.Update();
+
+        rectangle.rotate(0.1f);
+        oWindow.draw(rectangle);
 
         oWindow.display();
     }
