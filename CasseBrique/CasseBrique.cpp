@@ -22,7 +22,7 @@ int main(int argc, char** argv)
     GameObject oRectangleObject("rectangle",size,&oWindow);
     sf::RectangleShape rectangle(size);
 
-    oRectangleObject.pos = sf::Vector2f(0, 0);
+    oRectangleObject.pos = sf::Vector2f(100, 100);
     oGameObject.pos = sf::Vector2f(0, 0);
     oGameObject.velocity = sf::Vector2f(0.1f,0.1f);
 
@@ -48,7 +48,7 @@ int main(int argc, char** argv)
         oGameObject.color = color;
 
         oRectangleObject.color = color;
-        oRectangleObject.Rotate(0.1f);
+        oRectangleObject.Rotate(0.01f);
         //oRectangleObject.rectangle.rotate(0.1f);
         
         oRectangleObject.Update();
