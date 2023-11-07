@@ -30,3 +30,6 @@
 *.app
 
 *.opendb
+
+CasseBrique\.vs\
+CasseBrique\x64\
