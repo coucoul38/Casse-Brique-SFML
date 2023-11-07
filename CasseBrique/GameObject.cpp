@@ -24,8 +24,8 @@ int GameObject::Draw() {
 		circle.setPosition(pos);
 
 		//create AABB bounding box
-		posMax.x = pos.x + radius;
-		posMax.y = pos.y + radius;
+		posMax.x = pos.x + radius*2;
+		posMax.y = pos.y + radius*2;
 		bounding_box.min = pos;
 		bounding_box.max = posMax;
 
@@ -62,18 +62,42 @@ void GameObject::Rotate(float angle) {
 }
 
 bool GameObject::AABBCollision(AABB external_bounding_box){
+	//std::cout << "---------------\nInternal Bounding box: \nmax:" << bounding_box.max.x << ", " << bounding_box.max.y << " min : " << bounding_box.min.x << ", " << bounding_box.min.y << "\n";
+
 	bool colliding = false;
 
 	AABB a = bounding_box;
 	AABB b = external_bounding_box;
+	float d1x = b.min.x - a.max.x;
+	float d1y = b.min.y - a.max.y;
+	float d2x = a.min.x - b.max.x;
+	float d2y = a.min.y - b.max.y;
 
-	if (a.min.x <= b.max.x && a.max.x >= b.min.x && a.min.y <= b.max.y && a.max.y >= b.min.y)
+	if (d1x > 0.0f || d1y > 0.0f) {
+		colliding = false;
+		color = sf::Color(255, 0, 0, 255);
+		return true;
+	}
+		
+
+	if (d2x > 0.0f || d2y > 0.0f) {
+		colliding = false;
+		color = sf::Color(255, 0, 0, 255);
+		return false;
+	}
+		
+	color = sf::Color(0, 255, 0, 255);
+	return true;
+
+	/*if (a.min.x <= b.max.x && a.max.x >= b.min.x && a.min.y <= b.max.y && a.max.y >= b.min.y)
 	{
 		colliding = true;
 		color = sf::Color(0, 255, 0, 255);
 	}
-
-	return(colliding);
+	else {
+		color = sf::Color(255, 0, 0, 255);
+	}
+	return(colliding);*/
 }
 
 GameObject::~GameObject() {

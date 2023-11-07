@@ -17,15 +17,20 @@ int main(int argc, char** argv)
     //Et de couleur verte
     oCircle.setFillColor(sf::Color::Green);
 
-    sf::Vector2f size(10, 100);
+    sf::Vector2f size(100, 10);
     GameObject oGameObject("circle",size,&oWindow);
     GameObject oRectangleObject("rectangle",size,&oWindow);
     sf::RectangleShape rectangle(size);
 
-    oRectangleObject.pos = sf::Vector2f(100, 100);
+    oRectangleObject.pos = sf::Vector2f(200, 300);
     oGameObject.pos = sf::Vector2f(0, 0);
-    oGameObject.velocity = sf::Vector2f(0.1f,0.1f);
+    oGameObject.velocity = sf::Vector2f(0.0f,0.01f);
 
+    sf::Color color(255, 100, 200, 255);
+
+    oGameObject.color = color;
+
+    oRectangleObject.color = color;
 
     //GameLoop
     while (oWindow.isOpen())
@@ -43,19 +48,14 @@ int main(int argc, char** argv)
         //DRAW
         oWindow.clear();
         
-        sf::Color color(255, 100, 200, 255);
-
-        oGameObject.color = color;
-
-        oRectangleObject.color = color;
-        oRectangleObject.Rotate(0.01f);
-        //oRectangleObject.rectangle.rotate(0.1f);
+        //oRectangleObject.Rotate(0.01f);
         
         oRectangleObject.Update();
         oGameObject.Update();
 
-        rectangle.rotate(0.1f);
-        //oWindow.draw(rectangle);
+        oRectangleObject.AABBCollision(oGameObject.bounding_box);
+        oGameObject.AABBCollision(oRectangleObject.bounding_box);
+
 
         oWindow.display();
     }
