@@ -1,6 +1,9 @@
 
 #include <SFML/Graphics.hpp>
 #include "GameObject.h"
+#include "InputManager.h"
+
+
 
 int main(int argc, char** argv)
 {
@@ -39,6 +42,13 @@ int main(int argc, char** argv)
         }
 
         //UPDATE
+
+        //Input Manager
+        sf::Vector2f newSize(100, 100);
+        GameObject newRect("rectangle", newSize, &oWindow);
+        InputManager testInputManager(&oWindow);
+        newRect.pos= sf::Vector2f(0.3f, 0.3f);
+        testInputManager.isMousePressed((*newRect.Draw)());
 
         //DRAW
         oWindow.clear();
