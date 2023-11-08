@@ -2,9 +2,12 @@
 #include <SFML/Graphics.hpp>
 #include "GameObject.h"
 #include "InputManager.h"
+#include <iostream> 
 
 int main(int argc, char** argv)
 {
+    std::vector<GameObject> gameObjectList;
+
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
 
@@ -13,25 +16,26 @@ int main(int argc, char** argv)
 
     //Création d'un cercle de radius 100
     sf::CircleShape oCircle(100.f);
-    //A la position 0, 0
     oCircle.setPosition(0.f, 0.f);
-    //Et de couleur verte
     oCircle.setFillColor(sf::Color::Green);
 
     sf::Vector2f size(100, 10);
-    GameObject oGameObject("circle",size,&oWindow);
+    GameObject oCircleObject("circle",size,&oWindow);
     GameObject oRectangleObject("rectangle",size,&oWindow);
     sf::RectangleShape rectangle(size);
 
     oRectangleObject.pos = sf::Vector2f(200, 300);
-    oGameObject.pos = sf::Vector2f(0, 0);
-    oGameObject.velocity = sf::Vector2f(0.0f,0.01f);
+    oCircleObject.pos = sf::Vector2f(0, 0);
+    oCircleObject.velocity = sf::Vector2f(0.0f,0.01f);
 
     sf::Color color(255, 100, 200, 255);
-
-    oGameObject.color = color;
-
+    oCircleObject.color = color;
     oRectangleObject.color = color;
+
+    gameObjectList.push_back(oRectangleObject);
+    gameObjectList.push_back(oCircleObject);
+
+    InputManager testInputManager(&oWindow);
 
     //GameLoop
     while (oWindow.isOpen())
@@ -44,25 +48,22 @@ int main(int argc, char** argv)
                 oWindow.close();
         }
 
-        //UPDATE
+		//Input Manager
+		testInputManager.isMousePressed(gameObjectList);
 
-		 //Input Manager
-		sf::Vector2f newSize(100, 100);
-		GameObject newRect("rectangle", newSize, &oWindow);
-		InputManager testInputManager(&oWindow);
-		newRect.pos = sf::Vector2f(0.3f, 0.3f);
-		//testInputManager.isMousePressed((*newRect.Draw)());
-
-        //DRAW
+        //Update every GameObject
         oWindow.clear();
-        
-        //oRectangleObject.Rotate(0.01f);
-        
-        oRectangleObject.Update();
-        oGameObject.Update();
+        for (int i = 0; i < gameObjectList.size(); i++)
+        {
+            gameObjectList[i].Update();
+        }
+        GameObject ball("circle", size, &oWindow);
+        ball.color = sf::Color(rand() % 255, rand() % 255, rand() % 255, 255);
+        ball.velocity = sf::Vector2f(1.0f,0.0f);
+        gameObjectList.push_back(ball);
 
-        oRectangleObject.AABBCollision(oGameObject.bounding_box);
-        oGameObject.AABBCollision(oRectangleObject.bounding_box);
+        oRectangleObject.AABBCollision(oCircleObject.bounding_box);
+        oCircleObject.AABBCollision(oRectangleObject.bounding_box);
 
 
         oWindow.display();

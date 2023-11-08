@@ -57,13 +57,16 @@ void GameObject::Move() {
 	pos.y += velocity.y;
 }
 
+void GameObject::Teleport(int x, int y) {
+	pos.x = x;
+	pos.y = y;
+}
+
 void GameObject::Rotate(float angle) {
 	rotation_angle += angle;
 }
 
 bool GameObject::AABBCollision(AABB external_bounding_box){
-	//std::cout << "---------------\nInternal Bounding box: \nmax:" << bounding_box.max.x << ", " << bounding_box.max.y << " min : " << bounding_box.min.x << ", " << bounding_box.min.y << "\n";
-
 	bool colliding = false;
 
 	AABB a = bounding_box;
@@ -78,7 +81,6 @@ bool GameObject::AABBCollision(AABB external_bounding_box){
 		color = sf::Color(255, 0, 0, 255);
 		return true;
 	}
-		
 
 	if (d2x > 0.0f || d2y > 0.0f) {
 		colliding = false;
@@ -88,16 +90,6 @@ bool GameObject::AABBCollision(AABB external_bounding_box){
 		
 	color = sf::Color(0, 255, 0, 255);
 	return true;
-
-	/*if (a.min.x <= b.max.x && a.max.x >= b.min.x && a.min.y <= b.max.y && a.max.y >= b.min.y)
-	{
-		colliding = true;
-		color = sf::Color(0, 255, 0, 255);
-	}
-	else {
-		color = sf::Color(255, 0, 0, 255);
-	}
-	return(colliding);*/
 }
 
 GameObject::~GameObject() {

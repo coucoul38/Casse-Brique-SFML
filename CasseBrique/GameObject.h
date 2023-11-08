@@ -30,6 +30,7 @@ public:
 
 	GameObject(std::string new_shape, sf::Vector2f new_size, sf::RenderWindow* new_window);
 	void Move();
+	void Teleport(int x, int y);
 	int Draw();
 	bool AABBCollision(AABB external_bounding_box);
 
