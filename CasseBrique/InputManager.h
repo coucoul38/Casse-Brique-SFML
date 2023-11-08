@@ -8,7 +8,7 @@ class InputManager
 public:
 	sf::RenderWindow* oWindow;
 	InputManager(sf::RenderWindow* window);
-	void isMousePressed(std::vector<GameObject> gameObjectsList);
+	void isMousePressed(std::vector<GameObject>* gameObjectsList);
 	//std::string text, int (*func)(std::string text)
 	sf::Vector2i getMousePosition(sf::RenderWindow* window);
 	~InputManager();

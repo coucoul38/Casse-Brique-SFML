@@ -16,7 +16,7 @@ int GameObject::Draw() {
 	sf::Vector2f posMax;
 
 	if (shape=="circle") {
-		float radius = std::max(size.x,size.y);
+		float radius = std::max(size.x,size.y)/2;
 		std::size_t pointCount = 30;
 		sf::CircleShape circle = sf::CircleShape::CircleShape(radius, pointCount);
 

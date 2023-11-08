@@ -49,7 +49,7 @@ int main(int argc, char** argv)
         }
 
 		//Input Manager
-		testInputManager.isMousePressed(gameObjectList);
+		testInputManager.isMousePressed(&gameObjectList);
 
         //Update every GameObject
         oWindow.clear();
@@ -57,10 +57,10 @@ int main(int argc, char** argv)
         {
             gameObjectList[i].Update();
         }
-        GameObject ball("circle", size, &oWindow);
+        /*GameObject ball("circle", size, &oWindow);
         ball.color = sf::Color(rand() % 255, rand() % 255, rand() % 255, 255);
         ball.velocity = sf::Vector2f(1.0f,0.0f);
-        gameObjectList.push_back(ball);
+        gameObjectList.push_back(ball);*/
 
         oRectangleObject.AABBCollision(oCircleObject.bounding_box);
         oCircleObject.AABBCollision(oRectangleObject.bounding_box);
