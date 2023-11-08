@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Window.hpp>
 
 #include <string>
 
@@ -34,8 +35,8 @@ public:
 	int Draw();
 	bool AABBCollision(AABB external_bounding_box);
 
+	bool CheckOutOfBounds();
 	void Rotate(float angle);
-
 	void Update() {
 		this->Move();
 		this->Draw();

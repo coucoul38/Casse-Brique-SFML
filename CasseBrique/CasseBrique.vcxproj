@@ -130,11 +130,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Canon.cpp" />
     <ClCompile Include="CasseBrique.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="InputManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Canon.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="InputManager.h" />
   </ItemGroup>

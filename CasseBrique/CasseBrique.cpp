@@ -20,8 +20,8 @@ int main(int argc, char** argv)
     oCircle.setFillColor(sf::Color::Green);
 
     sf::Vector2f size(100, 10);
-    GameObject oCircleObject("circle",size,&oWindow);
-    GameObject oRectangleObject("rectangle",size,&oWindow);
+    GameObject oCircleObject = GameObject("circle",size,&oWindow);
+    GameObject oRectangleObject = GameObject("rectangle",size,&oWindow);
     sf::RectangleShape rectangle(size);
 
     oRectangleObject.pos = sf::Vector2f(200, 300);
@@ -56,11 +56,12 @@ int main(int argc, char** argv)
         for (int i = 0; i < gameObjectList.size(); i++)
         {
             gameObjectList[i].Update();
+            if (gameObjectList[i].CheckOutOfBounds()) {
+                gameObjectList.erase(gameObjectList.begin() + i);
+            }
         }
-        /*GameObject ball("circle", size, &oWindow);
-        ball.color = sf::Color(rand() % 255, rand() % 255, rand() % 255, 255);
-        ball.velocity = sf::Vector2f(1.0f,0.0f);
-        gameObjectList.push_back(ball);*/
+        //system("cls");
+        //std::cout << "Number of balls: " << gameObjectList.size() << "\n";
 
         oRectangleObject.AABBCollision(oCircleObject.bounding_box);
         oCircleObject.AABBCollision(oRectangleObject.bounding_box);

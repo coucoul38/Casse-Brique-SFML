@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Window.hpp>
 #include <string>
 #include <cstddef>
 #include <iostream>
@@ -92,6 +93,13 @@ bool GameObject::AABBCollision(AABB external_bounding_box){
 	return true;
 }
 
+bool GameObject::CheckOutOfBounds(){
+	sf::Vector2u windowSize = window->getSize();
+	if (pos.x >= windowSize.x || pos.x <= 0 || pos.y >= windowSize.y || pos.y <= 0){
+		return true;
+	}
+	return false;
+}
+
 GameObject::~GameObject() {
-	
 }
