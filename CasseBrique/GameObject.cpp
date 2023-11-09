@@ -46,7 +46,20 @@ int GameObject::Draw() {
 		bounding_box.min = pos;
 		bounding_box.max = posMax;
 
+
+		//show bounding box on top of shape (funny recolor)
+		sf::ConvexShape rectBoundingBox;
+		rectBoundingBox.setPointCount(4);
+		rectBoundingBox.setPoint(0, bounding_box.min);
+		rectBoundingBox.setPoint(1, sf::Vector2f(bounding_box.max.x,bounding_box.min.y));
+		rectBoundingBox.setPoint(2, bounding_box.max);
+		rectBoundingBox.setPoint(3, sf::Vector2f(bounding_box.min.x, bounding_box.max.y));
+		rectBoundingBox.setFillColor(sf::Color(255, 255, 255, 100));
+		
+
+		
 		window->draw(rectangle);
+		window->draw(rectBoundingBox);
 	}
 	else {
 		return -1;

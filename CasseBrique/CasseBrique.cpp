@@ -32,7 +32,11 @@ int main(int argc, char** argv)
     gameObjectList.push_back(oRectangleObject);
     gameObjectList.push_back(oRectangleObject2);
 
-    InputManager oTestInputManager(&oWindow);
+    sf::Vector2f size2(100, 100);
+    GameObject ball("rectangle", size2, &oWindow,1500.0f);
+    ball.color = sf::Color(rand() % 255, rand() % 255, rand() % 255, 255);
+
+    InputManager oTestInputManager(&oWindow, &ball);
 
     sf::Clock oClock;
     float fDeltaTime;
@@ -61,11 +65,17 @@ int main(int argc, char** argv)
             oTestInputManager.isMousePressed(&gameObjectList);
             fTimer = 0.0f;
         }
+        
 
         //Update every GameObject
         oWindow.clear();
+        ball.color = sf::Color(255, 0, 0, 255);
         for (int i = 0; i < gameObjectList.size(); i++)
         {
+            if (ball.AABBCollision(gameObjectList[i].bounding_box)) {
+                ball.color = sf::Color(0, 255, 0, 255);
+            }
+
             gameObjectList[i].Update(fDeltaTime);
             for (int j = 0; j < gameObjectList.size(); j++) {
                 if (j != i) {
@@ -75,11 +85,19 @@ int main(int argc, char** argv)
                         gameObjectList[i].AABBCollision(gameObjectList[j].bounding_box);
                     }
                 }
+                gameObjectList[i].AABBCollision(gameObjectList[j].bounding_box);
             }
             if (gameObjectList[i].CheckOutOfBounds()) {
                 gameObjectList.erase(gameObjectList.begin() + i);
             }
         }
+        
+
+        sf::Vector2i mouse_pos = sf::Mouse::getPosition(*&oWindow);
+        ball.Teleport(mouse_pos.x, mouse_pos.y);
+        
+        ball.Update(fDeltaTime);
+
         //system("cls");
         //std::cout << "Deltatime:" << fDeltaTime;
 
