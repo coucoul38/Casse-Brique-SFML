@@ -114,9 +114,41 @@ bool GameObject::AABBCollision(AABB external_bounding_box){
 
 bool GameObject::CheckOutOfBounds(){
 	sf::Vector2u windowSize = window->getSize();
-	if (pos.x >= windowSize.x ||( pos.x + std::max(size.x, size.y) / 2) <= 0 || pos.y >= windowSize.y || (pos.y + std::max(size.x, size.y) / 2) <= 0){
+	AABB TopAABB;
+	TopAABB.min.x = -0.1f;
+	TopAABB.min.y = -0.1;
+	TopAABB.max.x = windowSize.x;
+	TopAABB.max.y = 0;
+
+	AABB BottomAABB;
+	BottomAABB.min.x = 0;
+	BottomAABB.min.y = windowSize.y;
+	BottomAABB.max.y = windowSize.y+0.1f;
+	BottomAABB.max.x = windowSize.x + 0.1f;
+
+	AABB LeftAABB;
+	LeftAABB.min.x = -0.1f;
+	LeftAABB.min.y = -0.1;
+	LeftAABB.max.y = windowSize.y;
+	LeftAABB.max.x = 0;
+
+	AABB RightAABB;
+	RightAABB.min.x = windowSize.x;
+	RightAABB.min.y = 0;
+	RightAABB.max.y = windowSize.y;
+	RightAABB.max.x = windowSize.x+0.1f;
+
+
+	/*if (pos.x >= windowSize.x ||( pos.x + std::max(size.x, size.y) / 2) <= 0 || pos.y >= windowSize.y || (pos.y + std::max(size.x, size.y) / 2) <= 0){
+		return true;
+	}*/
+	if (pos.y > windowSize.y) {
 		return true;
 	}
+	this->AABBCollision(LeftAABB);
+	this->AABBCollision(RightAABB);
+	this->AABBCollision(TopAABB);
+	this->AABBCollision(BottomAABB);
 	return false;
 }
 

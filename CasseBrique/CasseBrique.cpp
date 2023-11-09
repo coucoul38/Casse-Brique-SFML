@@ -13,23 +13,18 @@ int main(int argc, char** argv)
     settings.antialiasingLevel = 8;
     sf::RenderWindow oWindow(sf::VideoMode(640, 480), "SFML", sf::Style::Default, settings);
 
-    //Création d'un cercle de radius 100
-    sf::CircleShape oCircle(100.f);
-    oCircle.setPosition(0.f, 0.f);
-    oCircle.setFillColor(sf::Color::Green);
 
-    sf::Vector2f size(1000, 10);
+    sf::Vector2f size(100, 100);
     sf::Color color(255, 100, 200, 255);
 
     GameObject oRectangleObject = GameObject("rectangle",size,&oWindow,10.0f);
-    oRectangleObject.pos = sf::Vector2f(200, 300);
+    oRectangleObject.pos = sf::Vector2f(200, 200);
     oRectangleObject.color = color;
 	oRectangleObject.rectangle.setOutlineThickness(1.0f);
     oRectangleObject.rectangle.setOutlineColor(sf::Color(0, 0, 255));
 
-    sf::Vector2f size2(100, 1000);
-    GameObject oRectangleObject2 = GameObject("rectangle", size2, &oWindow, 10.0f);
-    oRectangleObject2.pos = sf::Vector2f(500, 300);
+    GameObject oRectangleObject2 = GameObject("rectangle", size, &oWindow, 10.0f);
+    oRectangleObject2.pos = sf::Vector2f(500, 200);
     oRectangleObject2.color = color;
         oRectangleObject2.rectangle.setOutlineThickness(1.0f);
     oRectangleObject2.rectangle.setOutlineColor(sf::Color(0, 0, 255));
