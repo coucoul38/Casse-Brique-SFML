@@ -19,7 +19,8 @@ public:
 	sf::Vector2f pos;
 	sf::Vector2f size;
 	sf::Color color;
-	sf::Vector2f velocity;
+	sf::Vector2f direction;
+	sf::Vector2f normalized_direction;
 	float speed;
 	//float rotation;
 	std::string shape;

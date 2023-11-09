@@ -18,20 +18,24 @@ int main(int argc, char** argv)
     oCircle.setPosition(0.f, 0.f);
     oCircle.setFillColor(sf::Color::Green);
 
-    sf::Vector2f size(100, 10);
-    GameObject oCircleObject = GameObject("circle",size,&oWindow,10.0f);
-    GameObject oRectangleObject = GameObject("rectangle",size,&oWindow,10.0f);
-
-    oRectangleObject.pos = sf::Vector2f(200, 300);
-    oCircleObject.pos = sf::Vector2f(0, 0);
-    oCircleObject.velocity = sf::Vector2f(0.0f,0.01f);
-
+    sf::Vector2f size(1000, 10);
     sf::Color color(255, 100, 200, 255);
-    oCircleObject.color = color;
+
+    GameObject oRectangleObject = GameObject("rectangle",size,&oWindow,10.0f);
+    oRectangleObject.pos = sf::Vector2f(200, 300);
     oRectangleObject.color = color;
+	oRectangleObject.rectangle.setOutlineThickness(1.0f);
+    oRectangleObject.rectangle.setOutlineColor(sf::Color(0, 0, 255));
+
+    sf::Vector2f size2(100, 1000);
+    GameObject oRectangleObject2 = GameObject("rectangle", size2, &oWindow, 10.0f);
+    oRectangleObject2.pos = sf::Vector2f(500, 300);
+    oRectangleObject2.color = color;
+        oRectangleObject2.rectangle.setOutlineThickness(1.0f);
+    oRectangleObject2.rectangle.setOutlineColor(sf::Color(0, 0, 255));
 
     gameObjectList.push_back(oRectangleObject);
-    gameObjectList.push_back(oCircleObject);
+    gameObjectList.push_back(oRectangleObject2);
 
     InputManager oTestInputManager(&oWindow);
 
@@ -62,6 +66,7 @@ int main(int argc, char** argv)
             oTestInputManager.isMousePressed(&gameObjectList);
             fTimer = 0.0f;
         }
+
         //Update every GameObject
         oWindow.clear();
         for (int i = 0; i < gameObjectList.size(); i++)
@@ -69,10 +74,13 @@ int main(int argc, char** argv)
             gameObjectList[i].Update(fDeltaTime);
             for (int j = 0; j < gameObjectList.size(); j++) {
                 if (j != i) {
-                    gameObjectList[i].AABBCollision(gameObjectList[j].bounding_box);
+                    sf::Vector2f fDistance(gameObjectList[i].pos.x - gameObjectList[j].pos.x, gameObjectList[i].pos.y - gameObjectList[j].pos.y);
+                    float normDistance = sqrt(fDistance.x * fDistance.x + fDistance.y * fDistance.y);
+                    if(normDistance > 0) {
+                        gameObjectList[i].AABBCollision(gameObjectList[j].bounding_box);
+                    }
                 }
             }
-            
             if (gameObjectList[i].CheckOutOfBounds()) {
                 gameObjectList.erase(gameObjectList.begin() + i);
             }
@@ -80,15 +88,10 @@ int main(int argc, char** argv)
         //system("cls");
         //std::cout << "Deltatime:" << fDeltaTime;
 
-        oRectangleObject.AABBCollision(oCircleObject.bounding_box);
-        oCircleObject.AABBCollision(oRectangleObject.bounding_box);
-
-
         oWindow.display();
         
         fTimer += fDeltaTime;
         fDeltaTime = oClock.restart().asSeconds();
-
     }
 
     return 0;

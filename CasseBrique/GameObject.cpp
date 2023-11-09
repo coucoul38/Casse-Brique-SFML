@@ -55,8 +55,13 @@ int GameObject::Draw() {
 }
 
 void GameObject::Move(float deltaTime) {
-	pos.x += velocity.x * deltaTime * speed;
-	pos.y += velocity.y * deltaTime * speed;
+	float norm = sqrt(direction.x * direction.x + direction.y * direction.y);
+	if (norm != 0.0f) {
+		normalized_direction = sf::Vector2f(direction.x / norm, direction.y / norm);
+	}
+	
+	pos.x += normalized_direction.x * deltaTime * speed;
+	pos.y += normalized_direction.y * deltaTime * speed;
 }
 
 void GameObject::Teleport(int x, int y) {
@@ -81,7 +86,7 @@ bool GameObject::AABBCollision(AABB external_bounding_box){
 	if (d1x > 0.0f || d1y > 0.0f) {
 		colliding = false;
 		//color = sf::Color(255, 0, 0, 255);
-		return true;
+		return false;
 	}
 
 	if (d2x > 0.0f || d2y > 0.0f) {
@@ -89,7 +94,9 @@ bool GameObject::AABBCollision(AABB external_bounding_box){
 		//color = sf::Color(255, 0, 0, 255);
 		return false;
 	}
-		
+
+	//add condition to check only once per collision
+	direction.y = -direction.y;
 	color = sf::Color(0, 255, 0, 255);
 	return true;
 }
