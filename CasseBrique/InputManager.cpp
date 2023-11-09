@@ -16,7 +16,7 @@ void InputManager::isMousePressed(std::vector<GameObject>* gameObjectsList) {
 		sf::Vector2i mouse_pos = this->getMousePosition(oWindow);
 		sf::Vector2f size(100.0f, 100.0f);
 
-		GameObject* ball=new GameObject("circle", size, oWindow);
+		GameObject* ball=new GameObject("circle", size, oWindow,1000.0f);
 		ball->color = sf::Color(rand() % 255, rand() % 255, rand() % 255, 255);
 		float radius = std::max(size.x, size.y) / 2;
 		ball->Teleport(mouse_pos.x-radius, mouse_pos.y-radius);

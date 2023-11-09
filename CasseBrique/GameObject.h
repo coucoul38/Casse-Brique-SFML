@@ -29,16 +29,16 @@ public:
 
 	sf::RenderWindow* window;
 
-	GameObject(std::string new_shape, sf::Vector2f new_size, sf::RenderWindow* new_window);
-	void Move();
+	GameObject(std::string new_shape, sf::Vector2f new_size, sf::RenderWindow* new_window, float new_speed);
+	void Move(float deltaTime);
 	void Teleport(int x, int y);
 	int Draw();
 	bool AABBCollision(AABB external_bounding_box);
 
 	bool CheckOutOfBounds();
 	void Rotate(float angle);
-	void Update() {
-		this->Move();
+	void Update(float deltaTime) {
+		this->Move(deltaTime);
 		this->Draw();
 	}
 

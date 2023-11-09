@@ -7,10 +7,11 @@
 #include <cstddef>
 #include <iostream>
 
-GameObject::GameObject(std::string new_shape, sf::Vector2f new_size, sf::RenderWindow* new_window) {
+GameObject::GameObject(std::string new_shape, sf::Vector2f new_size, sf::RenderWindow* new_window, float new_speed) {
 	shape = new_shape;
 	size = new_size;
 	window = new_window;
+	speed = new_speed;
 }
 
 int GameObject::Draw() {
@@ -53,9 +54,9 @@ int GameObject::Draw() {
 	return 0;
 }
 
-void GameObject::Move() {
-	pos.x += velocity.x;
-	pos.y += velocity.y;
+void GameObject::Move(float deltaTime) {
+	pos.x += velocity.x * deltaTime * speed;
+	pos.y += velocity.y * deltaTime * speed;
 }
 
 void GameObject::Teleport(int x, int y) {
@@ -95,7 +96,7 @@ bool GameObject::AABBCollision(AABB external_bounding_box){
 
 bool GameObject::CheckOutOfBounds(){
 	sf::Vector2u windowSize = window->getSize();
-	if (pos.x >= windowSize.x || pos.x <= 0 || pos.y >= windowSize.y || pos.y <= 0){
+	if (pos.x >= windowSize.x ||( pos.x + std::max(size.x, size.y) / 2) <= 0 || pos.y >= windowSize.y || (pos.y + std::max(size.x, size.y) / 2) <= 0){
 		return true;
 	}
 	return false;
