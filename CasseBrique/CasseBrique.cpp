@@ -14,7 +14,7 @@ int main(int argc, char** argv)
     sf::RenderWindow oWindow(sf::VideoMode(640, 480), "SFML", sf::Style::Default, settings);
 
 
-    sf::Vector2f size(50, 150);
+    sf::Vector2f size(150, 50);
     sf::Color color(255, 100, 200, 255);
 
     GameObject oRectangleObject = GameObject("rectangle",size,&oWindow,10.0f);
@@ -24,7 +24,7 @@ int main(int argc, char** argv)
     oRectangleObject.rectangle.setOutlineColor(sf::Color(0, 0, 255));
 
     GameObject oRectangleObject2 = GameObject("rectangle", size, &oWindow, 10.0f);
-    oRectangleObject2.pos = sf::Vector2f(500, 200);
+    oRectangleObject2.pos = sf::Vector2f(500, 400);
     oRectangleObject2.color = color;
         oRectangleObject2.rectangle.setOutlineThickness(1.0f);
     oRectangleObject2.rectangle.setOutlineColor(sf::Color(0, 0, 255));

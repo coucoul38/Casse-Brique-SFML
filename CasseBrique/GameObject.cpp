@@ -108,7 +108,7 @@ bool GameObject::AABBCollision(AABB external_bounding_box){
 		direction.y = -direction.y;
 	}
 	
-	color = sf::Color(0, 255, 0, 255);
+	//color = sf::Color(0, 255, 0, 255);
 	return true;
 }
 
