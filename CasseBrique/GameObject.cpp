@@ -78,6 +78,8 @@ bool GameObject::AABBCollision(AABB external_bounding_box){
 
 	AABB a = bounding_box;
 	AABB b = external_bounding_box;
+
+
 	float d1x = b.min.x - a.max.x;
 	float d1y = b.min.y - a.max.y;
 	float d2x = a.min.x - b.max.x;
@@ -95,8 +97,17 @@ bool GameObject::AABBCollision(AABB external_bounding_box){
 		return false;
 	}
 
-	//add condition to check only once per collision
-	direction.y = -direction.y;
+	sf::Vector2i hitDirection(0, 0);
+	float difX = (a.min.x - b.max.x);
+	float difY = (a.min.y - b.max.y);
+
+	if (abs(difX) < abs(difY)) {
+		direction.x = -direction.x;
+	}
+	else {
+		direction.y = -direction.y;
+	}
+	
 	color = sf::Color(0, 255, 0, 255);
 	return true;
 }
