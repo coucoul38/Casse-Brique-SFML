@@ -37,7 +37,7 @@ int GameObject::Draw() {
 		rectangle = sf::RectangleShape::RectangleShape(size);
 		rectangle.setFillColor(color);
 		rectangle.setPosition(pos);
-		rectangle.setOrigin(size.x/2,0);
+		//rectangle.setOrigin(size.x/2,0);
 		rectangle.setRotation(rotation_angle);
 
 		//create AABB bounding box
@@ -115,20 +115,20 @@ bool GameObject::AABBCollision(AABB external_bounding_box){
 bool GameObject::CheckOutOfBounds(){
 	sf::Vector2u windowSize = window->getSize();
 	AABB TopAABB;
-	TopAABB.min.x = -0.1f;
-	TopAABB.min.y = -0.1;
+	TopAABB.min.x = -10.0f;
+	TopAABB.min.y = -10.0;
 	TopAABB.max.x = windowSize.x;
 	TopAABB.max.y = 0;
 
 	AABB BottomAABB;
 	BottomAABB.min.x = 0;
 	BottomAABB.min.y = windowSize.y;
-	BottomAABB.max.y = windowSize.y+0.1f;
-	BottomAABB.max.x = windowSize.x + 0.1f;
+	BottomAABB.max.y = windowSize.y+10.0f;
+	BottomAABB.max.x = windowSize.x + 10.0f;
 
 	AABB LeftAABB;
-	LeftAABB.min.x = -0.1f;
-	LeftAABB.min.y = -0.1;
+	LeftAABB.min.x = -10.0f;
+	LeftAABB.min.y = -10.0;
 	LeftAABB.max.y = windowSize.y;
 	LeftAABB.max.x = 0;
 
@@ -136,7 +136,7 @@ bool GameObject::CheckOutOfBounds(){
 	RightAABB.min.x = windowSize.x;
 	RightAABB.min.y = 0;
 	RightAABB.max.y = windowSize.y;
-	RightAABB.max.x = windowSize.x+0.1f;
+	RightAABB.max.x = windowSize.x+10.0f;
 
 
 	/*if (pos.x >= windowSize.x ||( pos.x + std::max(size.x, size.y) / 2) <= 0 || pos.y >= windowSize.y || (pos.y + std::max(size.x, size.y) / 2) <= 0){

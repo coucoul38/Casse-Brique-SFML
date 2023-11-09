@@ -14,7 +14,7 @@ int main(int argc, char** argv)
     sf::RenderWindow oWindow(sf::VideoMode(640, 480), "SFML", sf::Style::Default, settings);
 
 
-    sf::Vector2f size(100, 100);
+    sf::Vector2f size(50, 150);
     sf::Color color(255, 100, 200, 255);
 
     GameObject oRectangleObject = GameObject("rectangle",size,&oWindow,10.0f);
