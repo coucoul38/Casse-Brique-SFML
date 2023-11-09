@@ -38,6 +38,7 @@ int main(int argc, char** argv)
     sf::Clock oClock;
     float fDeltaTime;
     fDeltaTime = oClock.restart().asSeconds();
+    float fTimer = 0.0f;
 
     //GameLoop
     while (oWindow.isOpen())
@@ -57,21 +58,27 @@ int main(int argc, char** argv)
         }
 
 		//Input Manager
-        oTestInputManager.isMousePressed(&gameObjectList);
-
+        if (fTimer >= 0.1f) {
+            oTestInputManager.isMousePressed(&gameObjectList);
+            fTimer = 0.0f;
+        }
         //Update every GameObject
         oWindow.clear();
         for (int i = 0; i < gameObjectList.size(); i++)
         {
             gameObjectList[i].Update(fDeltaTime);
+            for (int j = 0; j < gameObjectList.size(); j++) {
+                if (j != i) {
+                    gameObjectList[i].AABBCollision(gameObjectList[j].bounding_box);
+                }
+            }
+            
             if (gameObjectList[i].CheckOutOfBounds()) {
                 gameObjectList.erase(gameObjectList.begin() + i);
             }
         }
-        system("cls");
-        std::cout << "Deltatime:" << fDeltaTime;
         //system("cls");
-        //std::cout << "Number of balls: " << gameObjectList.size() << "\n";
+        //std::cout << "Deltatime:" << fDeltaTime;
 
         oRectangleObject.AABBCollision(oCircleObject.bounding_box);
         oCircleObject.AABBCollision(oRectangleObject.bounding_box);
@@ -79,7 +86,9 @@ int main(int argc, char** argv)
 
         oWindow.display();
         
+        fTimer += fDeltaTime;
         fDeltaTime = oClock.restart().asSeconds();
+
     }
 
     return 0;

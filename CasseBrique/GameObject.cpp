@@ -80,13 +80,13 @@ bool GameObject::AABBCollision(AABB external_bounding_box){
 
 	if (d1x > 0.0f || d1y > 0.0f) {
 		colliding = false;
-		color = sf::Color(255, 0, 0, 255);
+		//color = sf::Color(255, 0, 0, 255);
 		return true;
 	}
 
 	if (d2x > 0.0f || d2y > 0.0f) {
 		colliding = false;
-		color = sf::Color(255, 0, 0, 255);
+		//color = sf::Color(255, 0, 0, 255);
 		return false;
 	}
 		
