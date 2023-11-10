@@ -96,6 +96,12 @@ int GameObject::AABBCollision(GameObject* otherObject){
 	AABB a = bounding_box;
 	AABB b = otherObject->bounding_box;
 
+	collidedWith.clear();
+	for (int i = 0; i < collidingWith.size(); i++)
+	{
+		collidedWith.push_back(collidingWith[i]);
+	}
+	collidingWith.clear();
 
 	float d1x = b.min.x - a.max.x;
 	float d1y = b.min.y - a.max.y;
@@ -111,18 +117,19 @@ int GameObject::AABBCollision(GameObject* otherObject){
 		//color = sf::Color(255, 0, 0, 255);
 		return 0;
 	}
-	bool already = false;
+
+	//trying to detect collisionEnter and exit, not working
 	for (int i = 0; i < collidedWith.size(); i++)
 	{
 		if (collidedWith[i] == otherObject) {
-			system("cls");
-			std::cout << "already collided with this object\n";
-			already = true;
+			//return 0; //for some reasons this disables vertical collsions on the 'ball'
 		}
 	}
-	if(!already)
-		collidedWith.push_back(otherObject);
-
+	
+	//if not already collided with that object
+	collidingWith.push_back(otherObject);
+		
+		
 	sf::Vector2i hitDirection(0, 0);
 	float difXright = (a.min.x - b.max.x);
 	float difXleft = (a.max.x - b.min.x);
