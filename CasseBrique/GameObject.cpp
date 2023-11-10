@@ -154,30 +154,6 @@ int GameObject::AABBCollision(GameObject* otherObject){
 
 bool GameObject::CheckOutOfBounds(){
 	sf::Vector2u windowSize = window->getSize();
-	AABB TopAABB;
-	TopAABB.min.x = -10.0f;
-	TopAABB.min.y = -10.0;
-	TopAABB.max.x = windowSize.x;
-	TopAABB.max.y = 0;
-
-	AABB BottomAABB;
-	BottomAABB.min.x = 0;
-	BottomAABB.min.y = windowSize.y;
-	BottomAABB.max.y = windowSize.y+10.0f;
-	BottomAABB.max.x = windowSize.x + 10.0f;
-
-	AABB LeftAABB;
-	LeftAABB.min.x = -10.0f;
-	LeftAABB.min.y = -10.0;
-	LeftAABB.max.y = windowSize.y;
-	LeftAABB.max.x = 0;
-
-	AABB RightAABB;
-	RightAABB.min.x = windowSize.x;
-	RightAABB.min.y = 0;
-	RightAABB.max.y = windowSize.y;
-	RightAABB.max.x = windowSize.x+10.0f;
-
 
 	if (pos.x >= windowSize.x ||( pos.x + size.x) <= 0 || pos.y >= windowSize.y || (pos.y + size.y) <= 0){
 		return true;
@@ -186,11 +162,6 @@ bool GameObject::CheckOutOfBounds(){
 		return true;
 	}*/
 
-
-	/*this->AABBCollision(LeftAABB);
-	this->AABBCollision(RightAABB);
-	this->AABBCollision(TopAABB);
-	this->AABBCollision(BottomAABB);*/
 	return false;
 }
 
