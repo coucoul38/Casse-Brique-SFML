@@ -86,9 +86,7 @@ void GameObject::Rotate(float angle) {
 	rotation_angle += angle;
 }
 
-bool GameObject::AABBCollision(AABB external_bounding_box){
-	bool colliding = false;
-
+int GameObject::AABBCollision(AABB external_bounding_box){
 	AABB a = bounding_box;
 	AABB b = external_bounding_box;
 
@@ -99,15 +97,13 @@ bool GameObject::AABBCollision(AABB external_bounding_box){
 	float d2y = a.min.y - b.max.y;
 
 	if (d1x > 0.0f || d1y > 0.0f) {
-		colliding = false;
 		//color = sf::Color(255, 0, 0, 255);
-		return false;
+		return 0;
 	}
 
 	if (d2x > 0.0f || d2y > 0.0f) {
-		colliding = false;
 		//color = sf::Color(255, 0, 0, 255);
-		return false;
+		return 0;
 	}
 
 	sf::Vector2i hitDirection(0, 0);
@@ -116,13 +112,15 @@ bool GameObject::AABBCollision(AABB external_bounding_box){
 
 	if (abs(difX) < abs(difY)) {
 		direction.x = -direction.x;
+		return 2;
 	}
 	else {
 		direction.y = -direction.y;
+		return 3;
 	}
 	
 	//color = sf::Color(0, 255, 0, 255);
-	return true;
+	return 1;
 }
 
 bool GameObject::CheckOutOfBounds(){

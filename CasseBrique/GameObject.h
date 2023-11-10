@@ -34,7 +34,7 @@ public:
 	void Move(float deltaTime);
 	void Teleport(int x, int y);
 	int Draw();
-	bool AABBCollision(AABB external_bounding_box);
+	int AABBCollision(AABB external_bounding_box);
 
 	bool CheckOutOfBounds();
 	void Rotate(float angle);

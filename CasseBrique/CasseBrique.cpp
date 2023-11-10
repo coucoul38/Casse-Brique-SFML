@@ -72,8 +72,13 @@ int main(int argc, char** argv)
         ball.color = sf::Color(255, 0, 0, 255);
         for (int i = 0; i < gameObjectList.size(); i++)
         {
-            if (ball.AABBCollision(gameObjectList[i].bounding_box)) {
+            if (ball.AABBCollision(gameObjectList[i].bounding_box)==2) {
+                //vertical
                 ball.color = sf::Color(0, 255, 0, 255);
+            }
+            else if (ball.AABBCollision(gameObjectList[i].bounding_box) == 3) {
+                //horizontal
+                ball.color = sf::Color(0, 0, 255, 255);
             }
 
             gameObjectList[i].Update(fDeltaTime);
