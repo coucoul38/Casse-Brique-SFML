@@ -17,11 +17,21 @@ int main(int argc, char** argv)
     sf::Vector2f size(150, 50);
     sf::Color color(255, 100, 200, 255);
 
+    GameObject oTopBorder = GameObject("rectangle", sf::Vector2f(oWindow.getSize().x,1.0f),&oWindow, 0.0f);
+    oTopBorder.pos = sf::Vector2f(0,0);
+
+	GameObject oLeftBorder = GameObject("rectangle", sf::Vector2f( 1.0f, oWindow.getSize().y), &oWindow, 0.0f);
+	oLeftBorder.pos = sf::Vector2f(-1.0f,0);
+    oLeftBorder.color = color;
+
+	GameObject oRightBorder = GameObject("rectangle", sf::Vector2f( 1.0f, oWindow.getSize().y), &oWindow, 0.0f);
+	oRightBorder.pos = sf::Vector2f(oWindow.getSize().x, 0);
+
+
+
     GameObject oRectangleObject = GameObject("rectangle",size,&oWindow,100.0f);
     oRectangleObject.pos = sf::Vector2f(200, 200);
     oRectangleObject.color = color;
-	oRectangleObject.rectangle.setOutlineThickness(1.0f);
-    oRectangleObject.rectangle.setOutlineColor(sf::Color(0, 0, 255));
     oRectangleObject.direction = sf::Vector2f(1.0f, 0.0f);
 
     GameObject oRectangleObject2 = GameObject("rectangle", size, &oWindow, 10.0f);
@@ -81,9 +91,14 @@ int main(int argc, char** argv)
                 //horizontal
                 ball.color = sf::Color(0, 0, 255, 255);
             }
-            gameObjectList[i].AABBCollision(&ball);
 
             gameObjectList[i].Update(fDeltaTime);
+            
+            gameObjectList[i].AABBCollision(&oLeftBorder);
+            gameObjectList[i].AABBCollision(&oTopBorder);
+            gameObjectList[i].AABBCollision(&oRightBorder);
+
+            gameObjectList[i].AABBCollision(&ball);
             for (int j = 0; j < gameObjectList.size(); j++) {
                 if (j != i) {
                     sf::Vector2f fDistance(gameObjectList[i].pos.x - gameObjectList[j].pos.x, gameObjectList[i].pos.y - gameObjectList[j].pos.y);
@@ -102,12 +117,19 @@ int main(int argc, char** argv)
 
         sf::Vector2i mouse_pos = sf::Mouse::getPosition(*&oWindow);
         ball.Teleport(mouse_pos.x, mouse_pos.y);
-        
-        ball.Update(fDeltaTime);
+        oTopBorder.size = sf::Vector2f(oWindow.getSize().x, 1.0f);
+        oLeftBorder.size = sf::Vector2f(1.0f, oWindow.getSize().y);
+        oRightBorder.size = sf::Vector2f(1.0f, oWindow.getSize().y);
+        oRightBorder.Teleport(oWindow.getSize().x, 0);
 
-        system("cls");
+        ball.Update(fDeltaTime);
+        oRightBorder.Update(fDeltaTime);
+        oTopBorder.Update(fDeltaTime);
+        oLeftBorder.Update(fDeltaTime);
+
+        /*system("cls");
         std::cout << "Deltatime:" << fDeltaTime<<"\n";
-        std::cout << "Number of gameOjbects: " << gameObjectList.size()<<"\n";
+        std::cout << "Number of gameOjbects: " << gameObjectList.size()<<"\n";*/
 
         oWindow.display();
         

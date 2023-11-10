@@ -39,10 +39,7 @@ public:
 
 	bool CheckOutOfBounds();
 	void Rotate(float angle);
-	void Update(float deltaTime) {
-		this->Move(deltaTime);
-		this->Draw();
-	}
+	void Update(float deltaTime);
 
 	~GameObject();
 };

@@ -82,6 +82,12 @@ void GameObject::Teleport(int x, int y) {
 	pos.y = y;
 }
 
+void GameObject::Update(float deltaTime) {
+	//collidedWith.clear();
+	this->Move(deltaTime);
+	this->Draw();
+}
+
 void GameObject::Rotate(float angle) {
 	rotation_angle += angle;
 }
@@ -105,8 +111,17 @@ int GameObject::AABBCollision(GameObject* otherObject){
 		//color = sf::Color(255, 0, 0, 255);
 		return 0;
 	}
-
-	collidedWith.push_back(otherObject);
+	bool already = false;
+	for (int i = 0; i < collidedWith.size(); i++)
+	{
+		if (collidedWith[i] == otherObject) {
+			system("cls");
+			std::cout << "already collided with this object\n";
+			already = true;
+		}
+	}
+	if(!already)
+		collidedWith.push_back(otherObject);
 
 	sf::Vector2i hitDirection(0, 0);
 	float difXright = (a.min.x - b.max.x);
@@ -160,9 +175,11 @@ bool GameObject::CheckOutOfBounds(){
 	if (pos.x >= windowSize.x ||( pos.x + size.x) <= 0 || pos.y >= windowSize.y || (pos.y + size.y) <= 0){
 		return true;
 	}
-	if (pos.y > windowSize.y) {
+	/*if (pos.y > windowSize.y) {
 		return true;
-	}
+	}*/
+
+
 	/*this->AABBCollision(LeftAABB);
 	this->AABBCollision(RightAABB);
 	this->AABBCollision(TopAABB);
