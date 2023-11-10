@@ -27,6 +27,7 @@ public:
 	sf::RectangleShape rectangle;
 	AABB bounding_box;
 	float rotation_angle;
+	std::vector<GameObject*> collidedWith;
 
 	sf::RenderWindow* window;
 
@@ -34,7 +35,7 @@ public:
 	void Move(float deltaTime);
 	void Teleport(int x, int y);
 	int Draw();
-	int AABBCollision(AABB external_bounding_box);
+	int AABBCollision(GameObject* otherObject);
 
 	bool CheckOutOfBounds();
 	void Rotate(float angle);

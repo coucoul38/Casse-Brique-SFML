@@ -17,11 +17,12 @@ int main(int argc, char** argv)
     sf::Vector2f size(150, 50);
     sf::Color color(255, 100, 200, 255);
 
-    GameObject oRectangleObject = GameObject("rectangle",size,&oWindow,10.0f);
+    GameObject oRectangleObject = GameObject("rectangle",size,&oWindow,100.0f);
     oRectangleObject.pos = sf::Vector2f(200, 200);
     oRectangleObject.color = color;
 	oRectangleObject.rectangle.setOutlineThickness(1.0f);
     oRectangleObject.rectangle.setOutlineColor(sf::Color(0, 0, 255));
+    oRectangleObject.direction = sf::Vector2f(1.0f, 0.0f);
 
     GameObject oRectangleObject2 = GameObject("rectangle", size, &oWindow, 10.0f);
     oRectangleObject2.pos = sf::Vector2f(500, 400);
@@ -72,14 +73,15 @@ int main(int argc, char** argv)
         ball.color = sf::Color(255, 0, 0, 255);
         for (int i = 0; i < gameObjectList.size(); i++)
         {
-            if (ball.AABBCollision(gameObjectList[i].bounding_box)==2) {
+            if (ball.AABBCollision(&gameObjectList[i])==2) {
                 //vertical
                 ball.color = sf::Color(0, 255, 0, 255);
             }
-            else if (ball.AABBCollision(gameObjectList[i].bounding_box) == 3) {
+            else if (ball.AABBCollision(&gameObjectList[i]) == 3) {
                 //horizontal
                 ball.color = sf::Color(0, 0, 255, 255);
             }
+            gameObjectList[i].AABBCollision(&ball);
 
             gameObjectList[i].Update(fDeltaTime);
             for (int j = 0; j < gameObjectList.size(); j++) {
@@ -87,10 +89,10 @@ int main(int argc, char** argv)
                     sf::Vector2f fDistance(gameObjectList[i].pos.x - gameObjectList[j].pos.x, gameObjectList[i].pos.y - gameObjectList[j].pos.y);
                     float normDistance = sqrt(fDistance.x * fDistance.x + fDistance.y * fDistance.y);
                     if(normDistance > 0) {
-                        gameObjectList[i].AABBCollision(gameObjectList[j].bounding_box);
+                        gameObjectList[i].AABBCollision(&gameObjectList[j]);
                     }
                 }
-                gameObjectList[i].AABBCollision(gameObjectList[j].bounding_box);
+                //gameObjectList[i].AABBCollision(gameObjectList[j].bounding_box);
             }
             if (gameObjectList[i].CheckOutOfBounds()) {
                 gameObjectList.erase(gameObjectList.begin() + i);
@@ -103,8 +105,9 @@ int main(int argc, char** argv)
         
         ball.Update(fDeltaTime);
 
-        //system("cls");
-        //std::cout << "Deltatime:" << fDeltaTime;
+        system("cls");
+        std::cout << "Deltatime:" << fDeltaTime<<"\n";
+        std::cout << "Number of gameOjbects: " << gameObjectList.size()<<"\n";
 
         oWindow.display();
         
