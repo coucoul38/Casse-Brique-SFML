@@ -22,7 +22,6 @@ int main(int argc, char** argv)
 
 	GameObject oLeftBorder = GameObject("rectangle", sf::Vector2f( 1.0f, oWindow.getSize().y), &oWindow, 0.0f);
 	oLeftBorder.pos = sf::Vector2f(-1.0f,0);
-    oLeftBorder.color = color;
 
 	GameObject oRightBorder = GameObject("rectangle", sf::Vector2f( 1.0f, oWindow.getSize().y), &oWindow, 0.0f);
 	oRightBorder.pos = sf::Vector2f(oWindow.getSize().x, 0);
@@ -40,8 +39,8 @@ int main(int argc, char** argv)
         oRectangleObject2.rectangle.setOutlineThickness(1.0f);
     oRectangleObject2.rectangle.setOutlineColor(sf::Color(0, 0, 255));
 
-    //gameObjectList.push_back(oRectangleObject);
-    //gameObjectList.push_back(oRectangleObject2);
+    gameObjectList.push_back(oRectangleObject);
+    gameObjectList.push_back(oRectangleObject2);
 
     sf::Vector2f size2(100, 100);
     GameObject ball("rectangle", size2, &oWindow,1500.0f);
@@ -76,7 +75,6 @@ int main(int argc, char** argv)
             oTestInputManager.isMousePressed(&gameObjectList);
             fTimer = 0.0f;
         }
-        
 
         //Update every GameObject
         oWindow.clear();
@@ -118,16 +116,16 @@ int main(int argc, char** argv)
 
 
             // COLLISION BETWEEN BRICKS
-            //for (int j = 0; j < gameObjectList.size(); j++) {
-            //    if (j != i) {
-            //        sf::Vector2f fDistance(gameObjectList[i].pos.x - gameObjectList[j].pos.x, gameObjectList[i].pos.y - gameObjectList[j].pos.y);
-            //        float normDistance = sqrt(fDistance.x * fDistance.x + fDistance.y * fDistance.y);
-            //        if(normDistance > 0) {
-            //            gameObjectList[i].AABBCollision(&gameObjectList[j]);
-            //        }
-            //    }
-            //    //gameObjectList[i].AABBCollision(gameObjectList[j].bounding_box);
-            //}
+            for (int j = 0; j < gameObjectList.size(); j++) {
+                if (j != i) {
+                    sf::Vector2f fDistance(gameObjectList[i].pos.x - gameObjectList[j].pos.x, gameObjectList[i].pos.y - gameObjectList[j].pos.y);
+                    float normDistance = sqrt(fDistance.x * fDistance.x + fDistance.y * fDistance.y);
+                    if(normDistance > 0) {
+                        gameObjectList[i].AABBCollision(&gameObjectList[j]);
+                    }
+                }
+                //gameObjectList[i].AABBCollision(gameObjectList[j].bounding_box);
+            }
             if (gameObjectList[i].CheckOutOfBounds()) {
                 gameObjectList.erase(gameObjectList.begin() + i);
             }

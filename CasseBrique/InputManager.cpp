@@ -3,6 +3,7 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include "GameObject.h"
 #include <iostream> 
+#include "Ball.h"
 
 InputManager::InputManager(sf::RenderWindow* window, GameObject* in_ball)
 {
@@ -18,14 +19,12 @@ void InputManager::isMousePressed(std::vector<GameObject>* gameObjectsList) {
 		sf::Vector2f size(100.0f, 100.0f); 
 		
 
-		GameObject* ball=new GameObject("rectangle", size, oWindow,100.0f); 
+		Ball* ball=new Ball(size, oWindow,100.0f); 
 		ball->color = sf::Color(rand() % 255, rand() % 255, rand() % 255, 255); 
 		float radius = std::max(size.x, size.y) / 2;
 		ball->Teleport(mouse_pos.x-radius, mouse_pos.y-radius);
-		ball->direction = sf::Vector2f(1.0f, 1.0f);
+		ball->direction = sf::Vector2f(0.0f, -1.0f);
 		//ball->speed = 100.0f;
-		ball->rectangle.setOutlineThickness(1.0f);
-		ball->rectangle.setOutlineColor(sf::Color(0,0,255));
 		gameObjectsList->push_back(*ball);
 	}
 }

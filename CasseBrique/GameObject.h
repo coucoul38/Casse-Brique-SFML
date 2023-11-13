@@ -36,11 +36,15 @@ public:
 	void Move(float deltaTime);
 	void Teleport(int x, int y);
 	int Draw();
-	int AABBCollision(GameObject* otherObject);
 
 	bool CheckOutOfBounds();
 	void Rotate(float angle);
 	void Update(float deltaTime);
+
+	virtual int AABBCollision(GameObject* otherObject);
+	virtual int onCollisionEnter(AABB a, AABB b) { return 0; };
+	virtual int onCollisionStay(AABB a, AABB b) { return 0;};
+	virtual int onCollisionExit(AABB a, AABB b) { return 0;};
 
 	~GameObject();
 };

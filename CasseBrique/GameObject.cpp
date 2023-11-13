@@ -26,9 +26,9 @@ int GameObject::Draw() {
 		circle.setFillColor(color);
 		circle.setPosition(pos);
 
-		//create AABB bounding box
-		posMax.x = pos.x + radius*2;
-		posMax.y = pos.y + radius*2;
+		//Update AABB bounding box
+		posMax.x = pos.x + radius * 2;
+		posMax.y = pos.y + radius * 2;
 		bounding_box.min = pos;
 		bounding_box.max = posMax;
 
@@ -104,8 +104,7 @@ int GameObject::AABBCollision(GameObject* otherObject){
 		auto it = std::find(collidedWith.begin(), collidedWith.end(), otherObject);
 		if (it != collidedWith.end()) 
 		{
-			//TODO Call "OnCollisionExit"
-			std::cout << "Collision Exit\n";
+			this->onCollisionExit(a, b);
 			collidedWith.erase(it);
 		}
 		
@@ -117,8 +116,7 @@ int GameObject::AABBCollision(GameObject* otherObject){
 		auto it = std::find(collidedWith.begin(), collidedWith.end(), otherObject);
 		if (it != collidedWith.end()) 
 		{
-			//TODO Call "OnCollisionExit"
-			std::cout << "Collision Exit\n";
+			this->onCollisionExit(a, b);
 			collidedWith.erase(it);
 		}
 
@@ -126,24 +124,18 @@ int GameObject::AABBCollision(GameObject* otherObject){
 	}
 
 	//COLISION
-	//trying to detect collisionEnter and exit, not working
 
 	auto it = std::find(collidedWith.begin(), collidedWith.end(), otherObject);
 	if (it != collidedWith.end()) 
 	{
-		//TODO Call "OnCollisionStay"
+		this->onCollisionStay(a, b);
 		return 0;
 	}
 	
 	//if not already collided with that object
-	//std::cout << "Collision entered\n";
 	collidedWith.push_back(otherObject);
-	
 
-	//TODO Call "OnCollisionEnter"
-	std::cout << "Collision Entered\n";
-
-	//TODO put into class Ball
+	this->onCollisionEnter(a, b);
 	float difXright = (a.min.x - b.max.x);
 	float difXleft = (a.max.x - b.min.x);
 	float difX = std::min(abs(difXleft), abs(difXright));
@@ -155,11 +147,13 @@ int GameObject::AABBCollision(GameObject* otherObject){
 	if (difX < difY) {
 		//vertical collision
 		direction.x = -direction.x;
+		color = sf::Color(0, 255, 0, 255);
 		return 2;
 	}
 	else {
 		//horizontal collision
 		direction.y = -direction.y;
+		color = sf::Color(0, 0, 255, 255);
 		return 3;
 	}
 }
