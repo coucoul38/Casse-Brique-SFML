@@ -27,6 +27,6 @@ namespace Math {
 	}
 
 	float findAngle(sf::Vector2f vect1, sf::Vector2f vect2) {
-		
+		return 0;
 	}
 }
