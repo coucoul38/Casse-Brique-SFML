@@ -6,6 +6,7 @@
 #include <string>
 #include <cstddef>
 #include <iostream>
+#include "Math.h"
 
 GameObject::GameObject(std::string new_shape, sf::Vector2f new_size, sf::RenderWindow* new_window, float new_speed) {
 	shape = new_shape;
@@ -68,10 +69,7 @@ int GameObject::Draw() {
 }
 
 void GameObject::Move(float deltaTime) {
-	float norm = sqrt(direction.x * direction.x + direction.y * direction.y);
-	if (norm != 0.0f) {
-		normalized_direction = sf::Vector2f(direction.x / norm, direction.y / norm);
-	}
+	normalized_direction = Math::normalize(direction);
 	
 	pos.x += normalized_direction.x * deltaTime * speed;
 	pos.y += normalized_direction.y * deltaTime * speed;
