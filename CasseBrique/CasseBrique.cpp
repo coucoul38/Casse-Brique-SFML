@@ -35,7 +35,7 @@ int main(int argc, char** argv)
     oRectangleObject.direction = sf::Vector2f(1.0f, 0.0f);
 
     GameObject oRectangleObject2 = GameObject("rectangle", size, &oWindow, 10.0f);
-    oRectangleObject2.pos = sf::Vector2f(500, 400);
+    oRectangleObject2.pos = sf::Vector2f(300, 300);
     oRectangleObject2.color = color;
         oRectangleObject2.rectangle.setOutlineThickness(1.0f);
     oRectangleObject2.rectangle.setOutlineColor(sf::Color(0, 0, 255));
@@ -83,11 +83,13 @@ int main(int argc, char** argv)
         ball.color = sf::Color(255, 0, 0, 255);
         for (int i = 0; i < gameObjectList.size(); i++)
         {
-            if (ball.AABBCollision(&gameObjectList[i])==2) {
+            int ballCollision = 0;
+            ballCollision = ball.AABBCollision(&gameObjectList[i]);
+            if (ballCollision ==2) {
                 //vertical
                 ball.color = sf::Color(0, 255, 0, 255);
             }
-            else if (ball.AABBCollision(&gameObjectList[i]) == 3) {
+            else if (ballCollision == 3) {
                 //horizontal
                 ball.color = sf::Color(0, 0, 255, 255);
             }
@@ -98,17 +100,34 @@ int main(int argc, char** argv)
             gameObjectList[i].AABBCollision(&oTopBorder);
             gameObjectList[i].AABBCollision(&oRightBorder);
 
-            gameObjectList[i].AABBCollision(&ball);
-            for (int j = 0; j < gameObjectList.size(); j++) {
-                if (j != i) {
-                    sf::Vector2f fDistance(gameObjectList[i].pos.x - gameObjectList[j].pos.x, gameObjectList[i].pos.y - gameObjectList[j].pos.y);
-                    float normDistance = sqrt(fDistance.x * fDistance.x + fDistance.y * fDistance.y);
-                    if(normDistance > 0) {
-                        gameObjectList[i].AABBCollision(&gameObjectList[j]);
-                    }
-                }
-                //gameObjectList[i].AABBCollision(gameObjectList[j].bounding_box);
+            //Bricks change direction upon colliding with the ball
+            //gameObjectList[i].AABBCollision(&ball); 
+            int brickCollision = 0;
+            brickCollision = gameObjectList[i].AABBCollision(&ball);
+            if (brickCollision == 2) {
+                //vertical
+                gameObjectList[i].color = sf::Color(0, 255, 0, 255);
             }
+            else if (brickCollision == 3) {
+                //horizontal
+                gameObjectList[i].color = sf::Color(0, 0, 255, 255);
+            }
+            else {
+                gameObjectList[i].color = sf::Color(255, 0, 0, 255);
+            }
+
+
+            // COLLISION BETWEEN BRICKS
+            //for (int j = 0; j < gameObjectList.size(); j++) {
+            //    if (j != i) {
+            //        sf::Vector2f fDistance(gameObjectList[i].pos.x - gameObjectList[j].pos.x, gameObjectList[i].pos.y - gameObjectList[j].pos.y);
+            //        float normDistance = sqrt(fDistance.x * fDistance.x + fDistance.y * fDistance.y);
+            //        if(normDistance > 0) {
+            //            gameObjectList[i].AABBCollision(&gameObjectList[j]);
+            //        }
+            //    }
+            //    //gameObjectList[i].AABBCollision(gameObjectList[j].bounding_box);
+            //}
             if (gameObjectList[i].CheckOutOfBounds()) {
                 gameObjectList.erase(gameObjectList.begin() + i);
             }
