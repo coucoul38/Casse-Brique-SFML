@@ -94,12 +94,6 @@ int GameObject::AABBCollision(GameObject* otherObject){
 	AABB a = bounding_box;
 	AABB b = otherObject->bounding_box;
 
-	for (int i = 0; i < collidingWith.size(); i++)
-	{
-		collidedWith.push_back(collidingWith[i]);
-	}
-	collidingWith.clear();
-
 	float d1x = b.min.x - a.max.x;
 	float d1y = b.min.y - a.max.y;
 	float d2x = a.min.x - b.max.x;
@@ -107,29 +101,49 @@ int GameObject::AABBCollision(GameObject* otherObject){
 	//system("cls");
 	if (d1x > 0.0f || d1y > 0.0f) {
 		//color = sf::Color(255, 0, 0, 255);
-		collidedWith.clear();
+		auto it = std::find(collidedWith.begin(), collidedWith.end(), otherObject);
+		if (it != collidedWith.end()) 
+		{
+			//TODO Call "OnCollisionExit"
+			std::cout << "Collision Exit\n";
+			collidedWith.erase(it);
+		}
+		
 		return 0;
 	}
 
 	if (d2x > 0.0f || d2y > 0.0f) {
 		//color = sf::Color(255, 0, 0, 255);
-		collidedWith.clear();
+		auto it = std::find(collidedWith.begin(), collidedWith.end(), otherObject);
+		if (it != collidedWith.end()) 
+		{
+			//TODO Call "OnCollisionExit"
+			std::cout << "Collision Exit\n";
+			collidedWith.erase(it);
+		}
+
 		return 0;
 	}
 
 	//COLISION
 	//trying to detect collisionEnter and exit, not working
-	for (int i = 0; i < collidedWith.size(); i++)
+
+	auto it = std::find(collidedWith.begin(), collidedWith.end(), otherObject);
+	if (it != collidedWith.end()) 
 	{
-		if (collidedWith[i] == otherObject) {
-			return 0; //for some reasons this disables vertical collsions on the 'ball'
-		}
+		//TODO Call "OnCollisionStay"
+		return 0;
 	}
 	
 	//if not already collided with that object
 	//std::cout << "Collision entered\n";
-	collidingWith.push_back(otherObject);
+	collidedWith.push_back(otherObject);
 	
+
+	//TODO Call "OnCollisionEnter"
+	std::cout << "Collision Entered\n";
+
+	//TODO put into class Ball
 	float difXright = (a.min.x - b.max.x);
 	float difXleft = (a.max.x - b.min.x);
 	float difX = std::min(abs(difXleft), abs(difXright));

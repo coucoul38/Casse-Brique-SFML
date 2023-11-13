@@ -40,8 +40,8 @@ int main(int argc, char** argv)
         oRectangleObject2.rectangle.setOutlineThickness(1.0f);
     oRectangleObject2.rectangle.setOutlineColor(sf::Color(0, 0, 255));
 
-    gameObjectList.push_back(oRectangleObject);
-    gameObjectList.push_back(oRectangleObject2);
+    //gameObjectList.push_back(oRectangleObject);
+    //gameObjectList.push_back(oRectangleObject2);
 
     sf::Vector2f size2(100, 100);
     GameObject ball("rectangle", size2, &oWindow,1500.0f);

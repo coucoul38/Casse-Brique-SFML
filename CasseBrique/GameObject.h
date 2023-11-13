@@ -28,7 +28,6 @@ public:
 	AABB bounding_box;
 	float rotation_angle;
 	std::vector<GameObject*> collidedWith;
-	std::vector<GameObject*> collidingWith;
 	bool collisionHandled;
 
 	sf::RenderWindow* window;
