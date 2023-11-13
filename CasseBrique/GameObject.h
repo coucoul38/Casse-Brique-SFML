@@ -39,7 +39,7 @@ public:
 
 	bool CheckOutOfBounds();
 	void Rotate(float angle);
-	void Update(float deltaTime);
+	virtual int Update(float deltaTime);
 
 	virtual int AABBCollision(GameObject* otherObject);
 	virtual int onCollisionEnter(AABB a, AABB b) { return 0; };

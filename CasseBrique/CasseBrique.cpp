@@ -3,6 +3,7 @@
 #include "GameObject.h"
 #include "InputManager.h"
 #include <iostream> 
+#include "Block.h"
 
 int main(int argc, char** argv)
 {
@@ -27,20 +28,30 @@ int main(int argc, char** argv)
 	oRightBorder.pos = sf::Vector2f(oWindow.getSize().x, 0);
 
 
+    Block block1 = Block(size, &oWindow, 1);
+    block1.pos = sf::Vector2f(200, 200);
+    block1.speed = 10.0f;
+    block1.direction = sf::Vector2f(1.0f, 0.0f);
 
-    GameObject oRectangleObject = GameObject("rectangle",size,&oWindow,100.0f);
+    Block block2 = Block(size, &oWindow, 1);
+    block2.pos = sf::Vector2f(300, 300);
+
+    /*GameObject oRectangleObject = GameObject("rectangle",size,&oWindow,100.0f);
     oRectangleObject.pos = sf::Vector2f(200, 200);
     oRectangleObject.color = color;
-    oRectangleObject.direction = sf::Vector2f(1.0f, 0.0f);
+    oRectangleObject.direction = sf::Vector2f(1.0f, 0.0f);*/
 
-    GameObject oRectangleObject2 = GameObject("rectangle", size, &oWindow, 10.0f);
+    /*GameObject oRectangleObject2 = GameObject("rectangle", size, &oWindow, 10.0f);
     oRectangleObject2.pos = sf::Vector2f(300, 300);
     oRectangleObject2.color = color;
         oRectangleObject2.rectangle.setOutlineThickness(1.0f);
     oRectangleObject2.rectangle.setOutlineColor(sf::Color(0, 0, 255));
 
     gameObjectList.push_back(oRectangleObject);
-    gameObjectList.push_back(oRectangleObject2);
+    gameObjectList.push_back(oRectangleObject2);*/
+
+    gameObjectList.push_back(block1);
+    gameObjectList.push_back(block2);
 
     sf::Vector2f size2(100, 100);
     GameObject ball("rectangle", size2, &oWindow,1500.0f);
@@ -80,40 +91,10 @@ int main(int argc, char** argv)
         oWindow.clear();
         ball.color = sf::Color(255, 0, 0, 255);
         for (int i = 0; i < gameObjectList.size(); i++)
-        {
-            int ballCollision = 0;
-            ballCollision = ball.AABBCollision(&gameObjectList[i]);
-            if (ballCollision ==2) {
-                //vertical
-                ball.color = sf::Color(0, 255, 0, 255);
-            }
-            else if (ballCollision == 3) {
-                //horizontal
-                ball.color = sf::Color(0, 0, 255, 255);
-            }
-
-            gameObjectList[i].Update(fDeltaTime);
-            
+        {            
             gameObjectList[i].AABBCollision(&oLeftBorder);
             gameObjectList[i].AABBCollision(&oTopBorder);
             gameObjectList[i].AABBCollision(&oRightBorder);
-
-            //Bricks change direction upon colliding with the ball
-            //gameObjectList[i].AABBCollision(&ball); 
-            int brickCollision = 0;
-            brickCollision = gameObjectList[i].AABBCollision(&ball);
-            if (brickCollision == 2) {
-                //vertical
-                gameObjectList[i].color = sf::Color(0, 255, 0, 255);
-            }
-            else if (brickCollision == 3) {
-                //horizontal
-                gameObjectList[i].color = sf::Color(0, 0, 255, 255);
-            }
-            else {
-                gameObjectList[i].color = sf::Color(255, 0, 0, 255);
-            }
-
 
             // COLLISION BETWEEN BRICKS
             for (int j = 0; j < gameObjectList.size(); j++) {
@@ -124,16 +105,21 @@ int main(int argc, char** argv)
                         gameObjectList[i].AABBCollision(&gameObjectList[j]);
                     }
                 }
-                //gameObjectList[i].AABBCollision(gameObjectList[j].bounding_box);
             }
             if (gameObjectList[i].CheckOutOfBounds()) {
                 gameObjectList.erase(gameObjectList.begin() + i);
+            }
+            else {
+                if (gameObjectList[i].Update(fDeltaTime) == 1) {
+                    gameObjectList.erase(gameObjectList.begin() + i);
+                }
             }
         }
         
 
         sf::Vector2i mouse_pos = sf::Mouse::getPosition(*&oWindow);
         ball.Teleport(mouse_pos.x, mouse_pos.y);
+
         oTopBorder.size = sf::Vector2f(oWindow.getSize().x, 1.0f);
         oLeftBorder.size = sf::Vector2f(1.0f, oWindow.getSize().y);
         oRightBorder.size = sf::Vector2f(1.0f, oWindow.getSize().y);

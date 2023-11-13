@@ -131,6 +131,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Ball.cpp" />
+    <ClCompile Include="Block.cpp" />
     <ClCompile Include="Canon.cpp" />
     <ClCompile Include="CasseBrique.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -139,6 +140,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ball.h" />
+    <ClInclude Include="Block.h" />
     <ClInclude Include="Canon.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="InputManager.h" />

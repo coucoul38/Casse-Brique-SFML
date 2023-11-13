@@ -80,10 +80,11 @@ void GameObject::Teleport(int x, int y) {
 	pos.y = y;
 }
 
-void GameObject::Update(float deltaTime) {
+int GameObject::Update(float deltaTime) {
 	//collidedWith.clear();
 	this->Move(deltaTime);
 	this->Draw();
+	return 0;
 }
 
 void GameObject::Rotate(float angle) {
@@ -100,7 +101,6 @@ int GameObject::AABBCollision(GameObject* otherObject){
 	float d2y = a.min.y - b.max.y;
 	//system("cls");
 	if (d1x > 0.0f || d1y > 0.0f) {
-		//color = sf::Color(255, 0, 0, 255);
 		auto it = std::find(collidedWith.begin(), collidedWith.end(), otherObject);
 		if (it != collidedWith.end()) 
 		{
@@ -112,7 +112,6 @@ int GameObject::AABBCollision(GameObject* otherObject){
 	}
 
 	if (d2x > 0.0f || d2y > 0.0f) {
-		//color = sf::Color(255, 0, 0, 255);
 		auto it = std::find(collidedWith.begin(), collidedWith.end(), otherObject);
 		if (it != collidedWith.end()) 
 		{
@@ -147,13 +146,13 @@ int GameObject::AABBCollision(GameObject* otherObject){
 	if (difX < difY) {
 		//vertical collision
 		direction.x = -direction.x;
-		color = sf::Color(0, 255, 0, 255);
+		//color = sf::Color(0, 255, 0, 255);
 		return 2;
 	}
 	else {
 		//horizontal collision
 		direction.y = -direction.y;
-		color = sf::Color(0, 0, 255, 255);
+		//color = sf::Color(0, 0, 255, 255);
 		return 3;
 	}
 }
