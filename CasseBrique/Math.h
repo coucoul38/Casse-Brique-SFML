@@ -8,5 +8,10 @@ namespace Math {
 	bool between(float x, float a, float b);
 
 	float findAngle(sf::Vector2f vect1, sf::Vector2f vect2);
+
+	float degToRad(float degrees);
+	float radToDeg(float radians);
+
+	float getNorm(sf::Vector2f);
 }
 

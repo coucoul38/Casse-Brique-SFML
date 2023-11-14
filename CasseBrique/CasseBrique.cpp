@@ -111,6 +111,7 @@ int main(int argc, char** argv)
 
         sf::Vector2i mouse_pos = sf::Mouse::getPosition(*&oWindow);
         ball.Teleport(mouse_pos.x, mouse_pos.y);
+        canon.LookAt(mouse_pos);
 
         oTopBorder.size = sf::Vector2f(oWindow.getSize().x, 1.0f);
         oLeftBorder.size = sf::Vector2f(1.0f, oWindow.getSize().y);
