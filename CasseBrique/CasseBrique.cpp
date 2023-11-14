@@ -107,7 +107,12 @@ int main(int argc, char** argv)
                 gameObjectList.erase(gameObjectList.begin() + i);
             }
             else {
+                /*GIVE COLOR TO BALLS
+                Ball* ballPtr = new Ball();
+                if(GameObject * d_ptr = typeid(Ball){
+                }*/ 
                 gameObjectList[i].Update(fDeltaTime);
+
                 /*if (gameObjectList[i].Update(fDeltaTime) == 1) {
                     gameObjectList.erase(gameObjectList.begin() + i);
                 }*/
