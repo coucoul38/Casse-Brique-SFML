@@ -2,14 +2,14 @@
 #include <SFML/Window/Mouse.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include "GameObject.h"
+#include "Canon.h"
 
 class InputManager
 {
 public:
-	GameObject* ball;
 	sf::RenderWindow* oWindow;
-	InputManager(sf::RenderWindow* window, GameObject* ball);
-	void isMousePressed(std::vector<GameObject>* gameObjectsList);
+	InputManager(sf::RenderWindow* window);
+	int isMousePressed();
 	//std::string text, int (*func)(std::string text)
 	sf::Vector2i getMousePosition(sf::RenderWindow* window);
 	~InputManager();

@@ -45,10 +45,10 @@ int main(int argc, char** argv)
     //gameObjectList.push_back(block2);
 
     sf::Vector2f size2(100, 100);
-    GameObject ball("rectangle", size2, &oWindow,1500.0f);
-    ball.color = sf::Color(rand() % 255, rand() % 255, rand() % 255, 255);
+    /*GameObject ball("rectangle", size2, &oWindow,1500.0f);
+    ball.color = sf::Color(rand() % 255, rand() % 255, rand() % 255, 255);*/
 
-    InputManager oTestInputManager(&oWindow, &ball);
+    InputManager oTestInputManager(&oWindow);
 
     sf::Clock oClock;
     float fDeltaTime;
@@ -73,14 +73,18 @@ int main(int argc, char** argv)
         }
 
 		//Input Manager
-        if (fTimer >= 0.1f) {
-            oTestInputManager.isMousePressed(&gameObjectList);
+        if (fTimer >= 0.5f) {
+            if (oTestInputManager.isMousePressed() == 1) {
+                canon.Shoot(&gameObjectList);
+                std::cout << "shoot\n";
+            }
             fTimer = 0.0f;
         }
 
+        
         //Update every GameObject
         oWindow.clear();
-        ball.color = sf::Color(255, 0, 0, 255);
+        //ball.color = sf::Color(255, 0, 0, 255);
         for (int i = 0; i < gameObjectList.size(); i++)
         {            
             gameObjectList[i].AABBCollision(&oLeftBorder);
@@ -110,7 +114,7 @@ int main(int argc, char** argv)
         
 
         sf::Vector2i mouse_pos = sf::Mouse::getPosition(*&oWindow);
-        ball.Teleport(mouse_pos.x, mouse_pos.y);
+        //ball.Teleport(mouse_pos.x, mouse_pos.y);
         canon.LookAt(mouse_pos);
 
         oTopBorder.size = sf::Vector2f(oWindow.getSize().x, 1.0f);
@@ -121,7 +125,7 @@ int main(int argc, char** argv)
 	    canon.pos.x = oWindow.getSize().x /2;
         canon.pos.y = oWindow.getSize().y;
 	    
-        ball.Update(fDeltaTime);
+        /*ball.Update(fDeltaTime);*/
         canon.Update(fDeltaTime);
         oRightBorder.Update(fDeltaTime);
         oTopBorder.Update(fDeltaTime);
