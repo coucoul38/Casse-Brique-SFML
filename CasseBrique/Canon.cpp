@@ -8,10 +8,9 @@ Canon::Canon(float new_rotation_speed, sf::Vector2f new_size, sf::RenderWindow* 
 	//size = sf::Vector2f(100, 10);
 	size = new_size;
 	window = new_window;
-	rectangle = sf::RectangleShape(size);
-	//rectangle.setOrigin(size.x, size.y);
+	rectangle.setOrigin(size.x, size.y);
 	pos.x = window->getSize().x/2;
-	pos.y = window->getSize().y-size.y;
+	pos.y = window->getSize().y;
 }
 
 void Canon::Update(float deltaTime) {
@@ -26,7 +25,7 @@ void Canon::LookAt(sf::Vector2i mousePos) {
 	float adjacent = Math::getNorm(adjacentCoordinates);
 
 	float angle = atan2(mousePos.x - pos.x, mousePos.y - pos.y);
-	rotation_angle = -Math::radToDeg(angle);
+	rotation_angle = -Math::radToDeg(angle)+180;
 }
 
 Canon::~Canon() {

@@ -118,8 +118,8 @@ int main(int argc, char** argv)
         oRightBorder.size = sf::Vector2f(1.0f, oWindow.getSize().y);
         oRightBorder.Teleport(oWindow.getSize().x, 0);
 
-	canon.pos.x = oWindow.getSize().x /2;
-        canon.pos.y = oWindow.getSize().y - canon.size.y;
+	    canon.pos.x = oWindow.getSize().x /2;
+        canon.pos.y = oWindow.getSize().y;
 	    
         ball.Update(fDeltaTime);
         canon.Update(fDeltaTime);
