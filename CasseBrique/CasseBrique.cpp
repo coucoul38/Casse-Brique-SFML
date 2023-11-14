@@ -13,7 +13,7 @@ int main(int argc, char** argv)
     //turn on antialiasing and create window
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
-    sf::RenderWindow oWindow(sf::VideoMode(1920, 1080), "SFML", sf::Style::Fullscreen, settings);
+    sf::RenderWindow oWindow(sf::VideoMode(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height), "SFML", sf::Style::Fullscreen, settings);
 
 
     sf::Vector2f size(150, 50);
