@@ -13,7 +13,7 @@ int main(int argc, char** argv)
     //turn on antialiasing and create window
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
-    sf::RenderWindow oWindow(sf::VideoMode(640, 480), "SFML", sf::Style::Default, settings);
+    sf::RenderWindow oWindow(sf::VideoMode(1920, 1080), "SFML", sf::Style::Fullscreen, settings);
 
 
     sf::Vector2f size(150, 50);
@@ -64,6 +64,8 @@ int main(int argc, char** argv)
         {
             if (oEvent.type == sf::Event::Closed)
                 oWindow.close();
+	if (oEvent.type == sf::Event::KeyPressed && oEvent.key.code == sf::Keyboard::Escape)
+   		 oWindow.close();
             if (oEvent.type == sf::Event::Resized)
             {
                 // update the view to the new size of the window
