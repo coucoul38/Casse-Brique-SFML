@@ -2,23 +2,16 @@
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics.hpp>
+#include "GameObject.h"
 
-class Canon
+class Canon : public GameObject
 {
 public:
 	float rotation_speed;
-	float rotation_angle;
-	sf::Vector2f pos;
-	sf::Vector2f size;
-	sf::Color color;
-	sf::RenderWindow* window;
-	sf::RectangleShape rectangle;
 
-
-	Canon(float new_rotation_speed, sf::Color new_color);
-	void LookAt(float x, float y);
-	void Draw();
-	void Rotate(float angle);
+	Canon(float new_rotation_speed, sf::Vector2f new_size, sf::RenderWindow* new_window);
+	void Update(float deltaTime) override;
+	void LookAt(sf::Vector2i mousePos);
 	~Canon();
 };
 

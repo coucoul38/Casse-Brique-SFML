@@ -5,6 +5,5 @@ class Ball : public GameObject
 {
 public:
 	Ball(sf::Vector2f new_size, sf::RenderWindow* new_window, float new_speed);
-	int AABBCollision(GameObject* otherObject) override;
 	int onCollisionEnter(AABB a, AABB b) override;
 };

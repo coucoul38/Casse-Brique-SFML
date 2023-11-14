@@ -5,11 +5,6 @@
 Ball::Ball(sf::Vector2f new_size, sf::RenderWindow* new_window, float new_speed)
 	: GameObject("circle", new_size, new_window, new_speed){}
 
-int Ball::AABBCollision(GameObject* otherObject) {
-	GameObject::AABBCollision(otherObject);
-	return 0;
-}
-
 int Ball::onCollisionEnter(AABB a, AABB b){
 	std::cout << "collision entered\n";
 	float difXright = (a.min.x - b.max.x);

@@ -7,25 +7,19 @@ Block::Block(sf::Vector2f new_size, sf::RenderWindow* new_window, int new_HP)
 	HP = new_HP;
 }
 
-int Block::AABBCollision(GameObject* otherObject) {
-	GameObject::AABBCollision(otherObject);
-	return 0;
-}
-
 int Block::onCollisionEnter(AABB a, AABB b) {
 	std::cout << "HP: " << HP << "\n";
 	HP -= 1;
 	return 0;
 }
 
-int Block::Update(float deltaTime) {
-	Draw();
-	Move(deltaTime);
+void Block::Update(float deltaTime) {
+	GameObject::Update(deltaTime);
 	std::cout << "HP: " << HP << "\n";
-	if (HP <= 0) {
-		return 1;
-	}
-	else {
-		return 0;
-	}
+	//if (HP <= 0) {
+	//	return 1;
+	//}
+	//else {
+	//	return 0;
+	//}
 }

@@ -4,6 +4,7 @@
 #include "InputManager.h"
 #include <iostream> 
 #include "Block.h"
+#include "Canon.h"
 
 int main(int argc, char** argv)
 {
@@ -36,22 +37,12 @@ int main(int argc, char** argv)
     Block block2 = Block(size, &oWindow, 1);
     block2.pos = sf::Vector2f(300, 300);
 
-    /*GameObject oRectangleObject = GameObject("rectangle",size,&oWindow,100.0f);
-    oRectangleObject.pos = sf::Vector2f(200, 200);
-    oRectangleObject.color = color;
-    oRectangleObject.direction = sf::Vector2f(1.0f, 0.0f);*/
+    sf::Vector2f canonSize (50, 150);
+    Canon canon = Canon(1, canonSize, &oWindow);
+    canon.color = sf::Color(100, 125, 255, 255);
 
-    /*GameObject oRectangleObject2 = GameObject("rectangle", size, &oWindow, 10.0f);
-    oRectangleObject2.pos = sf::Vector2f(300, 300);
-    oRectangleObject2.color = color;
-        oRectangleObject2.rectangle.setOutlineThickness(1.0f);
-    oRectangleObject2.rectangle.setOutlineColor(sf::Color(0, 0, 255));
-
-    gameObjectList.push_back(oRectangleObject);
-    gameObjectList.push_back(oRectangleObject2);*/
-
-    gameObjectList.push_back(block1);
-    gameObjectList.push_back(block2);
+    //gameObjectList.push_back(block1);
+    //gameObjectList.push_back(block2);
 
     sf::Vector2f size2(100, 100);
     GameObject ball("rectangle", size2, &oWindow,1500.0f);
@@ -110,9 +101,10 @@ int main(int argc, char** argv)
                 gameObjectList.erase(gameObjectList.begin() + i);
             }
             else {
-                if (gameObjectList[i].Update(fDeltaTime) == 1) {
+                gameObjectList[i].Update(fDeltaTime);
+                /*if (gameObjectList[i].Update(fDeltaTime) == 1) {
                     gameObjectList.erase(gameObjectList.begin() + i);
-                }
+                }*/
             }
         }
         
@@ -126,6 +118,7 @@ int main(int argc, char** argv)
         oRightBorder.Teleport(oWindow.getSize().x, 0);
 
         ball.Update(fDeltaTime);
+        canon.Update(fDeltaTime);
         oRightBorder.Update(fDeltaTime);
         oTopBorder.Update(fDeltaTime);
         oLeftBorder.Update(fDeltaTime);

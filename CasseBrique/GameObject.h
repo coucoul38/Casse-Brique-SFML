@@ -35,13 +35,13 @@ public:
 	GameObject(std::string new_shape, sf::Vector2f new_size, sf::RenderWindow* new_window, float new_speed);
 	void Move(float deltaTime);
 	void Teleport(int x, int y);
-	int Draw();
+	virtual int Draw();
 
 	bool CheckOutOfBounds();
 	void Rotate(float angle);
-	virtual int Update(float deltaTime);
+	virtual void Update(float deltaTime);
 
-	virtual int AABBCollision(GameObject* otherObject);
+	int AABBCollision(GameObject* otherObject);
 	virtual int onCollisionEnter(AABB a, AABB b) { return 0; };
 	virtual int onCollisionStay(AABB a, AABB b) { return 0;};
 	virtual int onCollisionExit(AABB a, AABB b) { return 0;};

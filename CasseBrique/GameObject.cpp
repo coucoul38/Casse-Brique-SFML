@@ -80,11 +80,10 @@ void GameObject::Teleport(int x, int y) {
 	pos.y = y;
 }
 
-int GameObject::Update(float deltaTime) {
+void GameObject::Update(float deltaTime) {
 	//collidedWith.clear();
 	this->Move(deltaTime);
 	this->Draw();
-	return 0;
 }
 
 void GameObject::Rotate(float angle) {
