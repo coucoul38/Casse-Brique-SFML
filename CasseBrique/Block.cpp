@@ -9,7 +9,7 @@ Block::Block(sf::Vector2f new_size, sf::RenderWindow* new_window, int new_HP)
 }
 
 int Block::onCollisionEnter(AABB a, AABB b) {
-	std::cout << "HP: " << HP << "\n";
+	std::cout << "HP: " << HP << "\n";	
 	HP -= 1;
 	switch (HP)
 	{

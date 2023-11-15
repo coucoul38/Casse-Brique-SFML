@@ -7,7 +7,7 @@ Ball::Ball(sf::Vector2f new_size, sf::RenderWindow* new_window, float new_speed)
 }
 
 int Ball::onCollisionEnter(AABB a, AABB b){
-	std::cout << "collision entered\n";
+	std::cout << "BALL collision entered\n";
 	float difXright = (a.min.x - b.max.x);
 	float difXleft = (a.max.x - b.min.x);
 	float difX = std::min(abs(difXleft), abs(difXright));

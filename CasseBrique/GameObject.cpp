@@ -13,25 +13,30 @@ GameObject::GameObject(std::string new_shape, sf::Vector2f new_size, sf::RenderW
 	size = new_size;
 	window = new_window;
 	speed = new_speed;
-}
-
-int GameObject::Draw() {
+	//initialize bounding box
 	sf::Vector2f posMax;
-
-	if (shape=="circle") {
-		float radius = std::max(size.x,size.y)/2;
-		std::size_t pointCount = 30;
-		sf::CircleShape circle = sf::CircleShape::CircleShape(radius, pointCount);
-
-		circle.setFillColor(color);
-		circle.setPosition(pos);
-
-		//Update AABB bounding box
+	float radius = std::max(size.x, size.y) / 2;
+	if (shape == "circle") {
 		posMax.x = pos.x + radius * 2;
 		posMax.y = pos.y + radius * 2;
 		bounding_box.min = pos;
 		bounding_box.max = posMax;
+	}
+	else {
+		posMax.x = pos.x + size.x;
+		posMax.y = pos.y + size.y;
+		bounding_box.min = pos;
+		bounding_box.max = posMax;
+	}
+}
 
+int GameObject::Draw() {
+	if (shape=="circle") {
+		float radius = std::max(size.x,size.y)/2;
+		std::size_t pointCount = 30;
+		sf::CircleShape circle = sf::CircleShape::CircleShape(radius, pointCount);
+		circle.setFillColor(color);
+		circle.setPosition(pos);
 		window->draw(circle);
 	}
 	else if (shape == "rectangle") {
@@ -40,12 +45,6 @@ int GameObject::Draw() {
 		rectangle.setPosition(pos);
 		rectangle.setRotation(rotation_angle);
 
-		//create AABB bounding box
-		posMax.x = pos.x + size.x;
-		posMax.y = pos.y + size.y;
-		bounding_box.min = pos;
-		bounding_box.max = posMax;
-		
 		window->draw(rectangle);
 	}
 	else {
@@ -59,6 +58,22 @@ void GameObject::Move(float deltaTime) {
 	
 	pos.x += normalized_direction.x * deltaTime * speed;
 	pos.y += normalized_direction.y * deltaTime * speed;
+
+	//update bounding box
+	sf::Vector2f posMax;
+	float radius = std::max(size.x, size.y) / 2;
+	if (shape == "circle") {
+		posMax.x = pos.x + radius * 2;
+		posMax.y = pos.y + radius * 2;
+		bounding_box.min = pos;
+		bounding_box.max = posMax;
+	}
+	else {
+		posMax.x = pos.x + size.x;
+		posMax.y = pos.y + size.y;
+		bounding_box.min = pos;
+		bounding_box.max = posMax;
+	}
 }
 
 void GameObject::Teleport(int x, int y) {

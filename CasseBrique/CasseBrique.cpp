@@ -20,7 +20,7 @@ int main(int argc, char** argv)
 
     sf::RenderWindow oWindow(sf::VideoMode(fWidth, fHeight), "SFML");// , sf::Style::Fullscreen, settings);
 
-    std::vector<std::vector<int>> listOfBlock = { {1,1,0,1} ,{0,1,0,1} };
+    std::vector<std::vector<int>> listOfBlock = { {0,0,0,0} ,{0,1,1,0} };
 
     std::vector<GameObject> gameObjectList;
     
@@ -108,7 +108,6 @@ int main(int argc, char** argv)
         }
         // ===============================
 
-        
 
         // UPDATE =========================
         //Update de tous les objets
@@ -168,7 +167,7 @@ int main(int argc, char** argv)
         
 
         //DRAW ===========================
-        oWindow.clear();
+        oWindow.clear(sf::Color(20,20,30,255));
         oTopBorder.Draw();
         oLeftBorder.Draw();
         oRightBorder.Draw();
