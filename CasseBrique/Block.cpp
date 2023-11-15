@@ -11,17 +11,6 @@ Block::Block(sf::Vector2f new_size, sf::RenderWindow* new_window, int new_HP)
 int Block::onCollisionEnter(AABB a, AABB b) {
 	std::cout << "HP: " << HP << "\n";
 	HP -= 1;
-	return 0;
-}
-
-int Block::Update(float deltaTime) {
-	GameObject::Update(deltaTime);
-	return 0;
-}
-
-int Block::Draw() {
-	GameObject::Draw();
-	std::cout << "HP: " << HP << "\n";
 	switch (HP)
 	{
 	case 3:
@@ -36,4 +25,10 @@ int Block::Draw() {
 	default:
 		return 0;
 	}
+	return 0;
+}
+
+int Block::Update(float deltaTime) {
+	GameObject::Update(deltaTime);
+	return 0;
 }

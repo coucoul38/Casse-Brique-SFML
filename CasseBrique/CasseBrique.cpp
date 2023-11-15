@@ -13,7 +13,12 @@ int main(int argc, char** argv)
     //turn on antialiasing and create window
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
-    sf::RenderWindow oWindow(sf::VideoMode(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height), "SFML", sf::Style::Fullscreen, settings);
+
+    int fWidth = 800;//sf::VideoMode::getDesktopMode().width
+    int fHeight = 600;//sf::VideoMode::getDesktopMode().height
+
+
+    sf::RenderWindow oWindow(sf::VideoMode(fWidth, fHeight), "SFML");// , sf::Style::Fullscreen, settings);
 
 
     sf::Vector2f size(150, 50);
@@ -29,7 +34,7 @@ int main(int argc, char** argv)
 	oRightBorder.pos = sf::Vector2f(oWindow.getSize().x, 0);
 
 
-    Block block1 = Block(size, &oWindow, 1);
+    Block block1 = Block(size, &oWindow, 3);
     block1.pos = sf::Vector2f(200, 200);
     block1.speed = 10.0f;
     block1.direction = sf::Vector2f(1.0f, 0.0f);
@@ -40,8 +45,7 @@ int main(int argc, char** argv)
     block2.color = sf::Color(255, 0, 0, 255);
 
     gameObjectList.push_back(block1);
-    gameObjectList.push_back(block2);
-
+    ////gameObjectList.push_back(block2);
 
     sf::Vector2f canonSize (50, 150);
     Canon canon = Canon(1, canonSize, &oWindow);
@@ -61,7 +65,7 @@ int main(int argc, char** argv)
     //GameLoop
     while (oWindow.isOpen())
     {
-        //EVENT
+        //EVENT =======================
         sf::Event oEvent;
         while (oWindow.pollEvent(oEvent))
         {
@@ -71,7 +75,7 @@ int main(int argc, char** argv)
    		        oWindow.close();
             if (oEvent.type == sf::Event::Resized)
             {
-                // update the view to the new size of the window
+                // Update the view to the new size of the window
                 sf::FloatRect visibleArea(0, 0, oEvent.size.width, oEvent.size.height);
                 oWindow.setView(sf::View(visibleArea));
             }
@@ -84,22 +88,45 @@ int main(int argc, char** argv)
             }
             fTimer = 0.0f;
         }
+        // ===============================
 
         
-        //Update every GameObject
-        oWindow.clear();
+
+        // UPDATE =========================
+        //Update de tous les objets
+        //Detection de collision
+
+        sf::Vector2i mouse_pos = sf::Mouse::getPosition(*&oWindow);
+        canon.LookAt(mouse_pos);
+        canon.pos.x = oWindow.getSize().x / 2;
+        canon.pos.y = oWindow.getSize().y;
+
+        //update window borders
+        oTopBorder.size = sf::Vector2f(oWindow.getSize().x, 1.0f);
+        oLeftBorder.size = sf::Vector2f(1.0f, oWindow.getSize().y);
+        oRightBorder.size = sf::Vector2f(1.0f, oWindow.getSize().y);
+        oRightBorder.Teleport(oWindow.getSize().x, 0);
+        oTopBorder.Teleport(0,0);
+        oRightBorder.Teleport(oWindow.getSize().x, 0);
+        oRightBorder.Move(fDeltaTime);
+        oLeftBorder.Move(fDeltaTime);
+        oTopBorder.Move(fDeltaTime);
+
         for (int i = 0; i < gameObjectList.size(); i++)
-        {            
+        {
+            gameObjectList[i].Move(fDeltaTime);
+
+            //COLLISIONS
             gameObjectList[i].AABBCollision(&oLeftBorder);
             gameObjectList[i].AABBCollision(&oTopBorder);
             gameObjectList[i].AABBCollision(&oRightBorder);
+            oRightBorder.AABBCollision(&gameObjectList[i]);
 
-            // COLLISION BETWEEN BRICKS
             for (int j = 0; j < gameObjectList.size(); j++) {
                 if (j != i) {
                     sf::Vector2f fDistance(gameObjectList[i].pos.x - gameObjectList[j].pos.x, gameObjectList[i].pos.y - gameObjectList[j].pos.y);
                     float normDistance = sqrt(fDistance.x * fDistance.x + fDistance.y * fDistance.y);
-                    if(normDistance > 0) {
+                    if (normDistance > 0) {
                         gameObjectList[i].AABBCollision(&gameObjectList[j]);
                     }
                 }
@@ -108,43 +135,36 @@ int main(int argc, char** argv)
                 gameObjectList.erase(gameObjectList.begin() + i);
             }
             else {
-                /*GIVE COLOR TO BALLS       
+                /*GIVE COLOR TO BALLS
                 Ball* ballPtr = new Ball();
                 if(GameObject * d_ptr = typeid(Ball){
-                }*/ 
-                gameObjectList[i].Update(fDeltaTime);
+                }*/
 
-                if (gameObjectList[i].Update(fDeltaTime) == 1) {
+                /*if (gameObjectList[i].Update(fDeltaTime) == 1) {
                     gameObjectList.erase(gameObjectList.begin() + i);
-                }
+                }*/
             }
         }
+
+        // ===============================
         
 
-        sf::Vector2i mouse_pos = sf::Mouse::getPosition(*&oWindow);
-        //ball.Teleport(mouse_pos.x, mouse_pos.y);
-        canon.LookAt(mouse_pos);
-
-        oTopBorder.size = sf::Vector2f(oWindow.getSize().x, 1.0f);
-        oLeftBorder.size = sf::Vector2f(1.0f, oWindow.getSize().y);
-        oRightBorder.size = sf::Vector2f(1.0f, oWindow.getSize().y);
-        oRightBorder.Teleport(oWindow.getSize().x, 0);
-
-	    canon.pos.x = oWindow.getSize().x /2;
-        canon.pos.y = oWindow.getSize().y;
-	    
-        /*ball.Update(fDeltaTime);*/
-        canon.Update(fDeltaTime);
-        oRightBorder.Update(fDeltaTime);
-        oTopBorder.Update(fDeltaTime);
-        oLeftBorder.Update(fDeltaTime);
-
+        //DRAW ===========================
+        oWindow.clear();
+        oTopBorder.Draw();
+        oLeftBorder.Draw();
+        oRightBorder.Draw();
+        canon.Draw();
+        for (int i = 0; i < gameObjectList.size(); i++)
+        {
+            gameObjectList[i].Draw();
+        }
+        oWindow.display();
+        // ===============================
         /*system("cls");
         std::cout << "Deltatime:" << fDeltaTime<<"\n";
         std::cout << "Number of gameOjbects: " << gameObjectList.size()<<"\n";*/
 
-        oWindow.display();
-        
         fTimer += fDeltaTime;
         fDeltaTime = oClock.restart().asSeconds();
     }
