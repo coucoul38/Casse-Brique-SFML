@@ -8,8 +8,8 @@
 
 int main(int argc, char** argv)
 {
-    std::vector<GameObject> gameObjectList;
-    
+
+
     //turn on antialiasing and create window
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
@@ -20,21 +20,38 @@ int main(int argc, char** argv)
 
     sf::RenderWindow oWindow(sf::VideoMode(fWidth, fHeight), "SFML");// , sf::Style::Fullscreen, settings);
 
+    std::vector<std::vector<int>> listOfBlock = { {1,1,0,1} ,{0,1,0,1} };
 
-    sf::Vector2f size(150, 50);
-    sf::Color color(255, 100, 200, 255);
+    std::vector<GameObject> gameObjectList;
+    
+    sf::Vector2f sizeOfBlock((oWindow.getSize().x / listOfBlock[0].size()-10), (((oWindow.getSize().y / 3) *2)/ listOfBlock.size()-10));
+    for (int i = 0; i < listOfBlock.size(); i++)
+    {
+        for (int j = 0; j < listOfBlock[i].size(); j++) {
+            if (listOfBlock[i][j]!=0)
+            {
+                Block blockTest(sizeOfBlock, &oWindow, listOfBlock[i][j]);
+                blockTest.pos = sf::Vector2f(j*sizeOfBlock.x+10*j, i*sizeOfBlock.y+10*i);
+                blockTest.color= sf::Color(255, 0, 0, 255);
+                gameObjectList.push_back(blockTest);
+            }
+        }
+    }
+    
+    //sf::Vector2f size(150, 50);
+    //sf::Color color(255, 100, 200, 255);
 
-    GameObject oTopBorder = GameObject("rectangle", sf::Vector2f(oWindow.getSize().x,1.0f),&oWindow, 0.0f);
-    oTopBorder.pos = sf::Vector2f(0,0);
+    GameObject oTopBorder = GameObject("rectangle", sf::Vector2f(oWindow.getSize().x, 1.0f), &oWindow, 0.0f);
+    oTopBorder.pos = sf::Vector2f(0, 0);
 
-	GameObject oLeftBorder = GameObject("rectangle", sf::Vector2f( 1.0f, oWindow.getSize().y), &oWindow, 0.0f);
-	oLeftBorder.pos = sf::Vector2f(-1.0f,0);
+    GameObject oLeftBorder = GameObject("rectangle", sf::Vector2f(1.0f, oWindow.getSize().y), &oWindow, 0.0f);
+    oLeftBorder.pos = sf::Vector2f(-1.0f, 0);
 
-	GameObject oRightBorder = GameObject("rectangle", sf::Vector2f( 1.0f, oWindow.getSize().y), &oWindow, 0.0f);
-	oRightBorder.pos = sf::Vector2f(oWindow.getSize().x, 0);
+    GameObject oRightBorder = GameObject("rectangle", sf::Vector2f(1.0f, oWindow.getSize().y), &oWindow, 0.0f);
+    oRightBorder.pos = sf::Vector2f(oWindow.getSize().x, 0);
 
-
-    Block block1 = Block(size, &oWindow, 3);
+    /*
+    Block block1 = Block(size, &oWindow, 1);
     block1.pos = sf::Vector2f(200, 200);
     block1.speed = 10.0f;
     block1.direction = sf::Vector2f(1.0f, 0.0f);
@@ -45,9 +62,10 @@ int main(int argc, char** argv)
     block2.color = sf::Color(255, 0, 0, 255);
 
     gameObjectList.push_back(block1);
-    ////gameObjectList.push_back(block2);
+    gameObjectList.push_back(block2);
 
-    sf::Vector2f canonSize (50, 150);
+    */
+    sf::Vector2f canonSize(50, 150);
     Canon canon = Canon(1, canonSize, &oWindow);
     canon.color = sf::Color(100, 125, 255, 255);
 
@@ -71,8 +89,8 @@ int main(int argc, char** argv)
         {
             if (oEvent.type == sf::Event::Closed)
                 oWindow.close();
-	        if (oEvent.type == sf::Event::KeyPressed && oEvent.key.code == sf::Keyboard::Escape)
-   		        oWindow.close();
+            if (oEvent.type == sf::Event::KeyPressed && oEvent.key.code == sf::Keyboard::Escape)
+                oWindow.close();
             if (oEvent.type == sf::Event::Resized)
             {
                 // Update the view to the new size of the window
@@ -81,7 +99,7 @@ int main(int argc, char** argv)
             }
         }
 
-		//Input Manager
+        //Input Manager
         if (fTimer >= 0.5f) {
             if (oTestInputManager.isMousePressed() == 1) {
                 canon.Shoot(&gameObjectList);
@@ -171,5 +189,4 @@ int main(int argc, char** argv)
 
     return 0;
 }
-
 
