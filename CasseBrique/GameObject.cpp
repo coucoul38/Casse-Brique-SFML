@@ -37,7 +37,6 @@ int GameObject::Draw() {
 	else if (shape == "rectangle") {
 		rectangle = sf::RectangleShape::RectangleShape(size);
 		rectangle.setFillColor(color);
-		rectangle.setOrigin(size.x / 2, size.y);
 		rectangle.setPosition(pos);
 		rectangle.setRotation(rotation_angle);
 
@@ -67,10 +66,11 @@ void GameObject::Teleport(int x, int y) {
 	pos.y = y;
 }
 
-void GameObject::Update(float deltaTime) {
+int GameObject::Update(float deltaTime) {
 	//collidedWith.clear();
 	this->Move(deltaTime);
 	this->Draw();
+	return 0;
 }
 
 void GameObject::Rotate(float angle) {
@@ -121,6 +121,7 @@ int GameObject::AABBCollision(GameObject* otherObject){
 	collidedWith.push_back(otherObject);
 
 	this->onCollisionEnter(a, b);
+
 	float difXright = (a.min.x - b.max.x);
 	float difXleft = (a.max.x - b.min.x);
 	float difX = std::min(abs(difXleft), abs(difXright));

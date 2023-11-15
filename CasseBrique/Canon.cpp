@@ -9,12 +9,14 @@ Canon::Canon(float new_rotation_speed, sf::Vector2f new_size, sf::RenderWindow* 
 	//size = sf::Vector2f(100, 10);
 	size = new_size;
 	window = new_window;
+	rectangle.setOrigin(size.x / 2, 0);
 	pos.x = window->getSize().x/2;
 	pos.y = window->getSize().y;
 }
 
-void Canon::Update(float deltaTime) {
+int Canon::Update(float deltaTime) {
 	GameObject::Update(deltaTime);
+	return 0;
 }
 
 void Canon::LookAt(sf::Vector2i mousePos) {
@@ -25,7 +27,7 @@ void Canon::LookAt(sf::Vector2i mousePos) {
 	float adjacent = Math::getNorm(adjacentCoordinates);
 
 	float angle = atan2(mousePos.x - pos.x, mousePos.y - pos.y);
-	rotation_angle = -Math::radToDeg(angle)+180;
+	rotation_angle = -Math::radToDeg(angle);
 }
 
 void Canon::Shoot(std::vector<GameObject>* gameObjectsList) {
@@ -35,8 +37,8 @@ void Canon::Shoot(std::vector<GameObject>* gameObjectsList) {
 	float radius = std::max(size.x, size.y) / 2;
 	ball->Teleport(pos.x-size.x, pos.y-size.y);
 	//ball->setOrigin(size.x, size.y);
-	ball->direction = sf::Vector2f(cos(Math::degToRad(rotation_angle-90)),sin(Math::degToRad(rotation_angle-90)));
-	ball->speed = 5000.0f;
+	ball->direction = sf::Vector2f(cos(Math::degToRad(rotation_angle+90)),sin(Math::degToRad(rotation_angle+90)));
+	ball->speed = 1000.0f;
 	gameObjectsList->push_back(*ball);
 }
 

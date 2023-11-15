@@ -34,15 +34,18 @@ int main(int argc, char** argv)
     block1.speed = 10.0f;
     block1.direction = sf::Vector2f(1.0f, 0.0f);
 
-    Block block2 = Block(size, &oWindow, 1);
+    //Block block2 = Block(size, &oWindow, 1);
+    GameObject block2 = GameObject("rectangle", size, &oWindow, 100.0f);
     block2.pos = sf::Vector2f(300, 300);
+    block2.color = sf::Color(255, 0, 0, 255);
+
+    gameObjectList.push_back(block1);
+    gameObjectList.push_back(block2);
+
 
     sf::Vector2f canonSize (50, 150);
     Canon canon = Canon(1, canonSize, &oWindow);
     canon.color = sf::Color(100, 125, 255, 255);
-
-    //gameObjectList.push_back(block1);
-    //gameObjectList.push_back(block2);
 
     sf::Vector2f size2(100, 100);
     /*GameObject ball("rectangle", size2, &oWindow,1500.0f);
@@ -64,8 +67,8 @@ int main(int argc, char** argv)
         {
             if (oEvent.type == sf::Event::Closed)
                 oWindow.close();
-	if (oEvent.type == sf::Event::KeyPressed && oEvent.key.code == sf::Keyboard::Escape)
-   		 oWindow.close();
+	        if (oEvent.type == sf::Event::KeyPressed && oEvent.key.code == sf::Keyboard::Escape)
+   		        oWindow.close();
             if (oEvent.type == sf::Event::Resized)
             {
                 // update the view to the new size of the window
@@ -78,7 +81,6 @@ int main(int argc, char** argv)
         if (fTimer >= 0.5f) {
             if (oTestInputManager.isMousePressed() == 1) {
                 canon.Shoot(&gameObjectList);
-                std::cout << "shoot\n";
             }
             fTimer = 0.0f;
         }
@@ -86,7 +88,6 @@ int main(int argc, char** argv)
         
         //Update every GameObject
         oWindow.clear();
-        //ball.color = sf::Color(255, 0, 0, 255);
         for (int i = 0; i < gameObjectList.size(); i++)
         {            
             gameObjectList[i].AABBCollision(&oLeftBorder);
@@ -107,15 +108,15 @@ int main(int argc, char** argv)
                 gameObjectList.erase(gameObjectList.begin() + i);
             }
             else {
-                /*GIVE COLOR TO BALLS
+                /*GIVE COLOR TO BALLS       
                 Ball* ballPtr = new Ball();
                 if(GameObject * d_ptr = typeid(Ball){
                 }*/ 
                 gameObjectList[i].Update(fDeltaTime);
 
-                /*if (gameObjectList[i].Update(fDeltaTime) == 1) {
+                if (gameObjectList[i].Update(fDeltaTime) == 1) {
                     gameObjectList.erase(gameObjectList.begin() + i);
-                }*/
+                }
             }
         }
         

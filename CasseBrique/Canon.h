@@ -10,7 +10,7 @@ public:
 	float rotation_speed;
 
 	Canon(float new_rotation_speed, sf::Vector2f new_size, sf::RenderWindow* new_window);
-	void Update(float deltaTime) override;
+	int Update(float deltaTime) override;
 	void LookAt(sf::Vector2i mousePos);
 	void Shoot(std::vector<GameObject>* gameObjectsList);
 	~Canon();
