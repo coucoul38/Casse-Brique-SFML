@@ -108,7 +108,6 @@ int GameObject::AABBCollision(GameObject* otherObject){
 			this->onCollisionExit(a, b);
 			collidedWith.erase(it);
 		}
-		
 		return 0;
 	}
 
@@ -119,7 +118,6 @@ int GameObject::AABBCollision(GameObject* otherObject){
 			this->onCollisionExit(a, b);
 			collidedWith.erase(it);
 		}
-
 		return 0;
 	}
 
@@ -135,28 +133,7 @@ int GameObject::AABBCollision(GameObject* otherObject){
 	//if not already collided with that object
 	collidedWith.push_back(otherObject);
 
-	this->onCollisionEnter(a, b);
-
-	float difXright = (a.min.x - b.max.x);
-	float difXleft = (a.max.x - b.min.x);
-	float difX = std::min(abs(difXleft), abs(difXright));
-
-	float difYbottom = (a.min.y - b.max.y);
-	float difYtop = (a.max.y - b.min.y);
-	float difY = std::min(abs(difYtop), abs(difYbottom));
-
-	if (difX < difY) {
-		//vertical collision
-		direction.x = -direction.x;
-		//color = sf::Color(0, 255, 0, 255);
-		return 2;
-	}
-	else {
-		//horizontal collision
-		direction.y = -direction.y;
-		//color = sf::Color(0, 0, 255, 255);
-		return 3;
-	}
+	return this->onCollisionEnter(a, b);
 }
 
 bool GameObject::CheckOutOfBounds(){

@@ -7,7 +7,6 @@ Ball::Ball(sf::Vector2f new_size, sf::RenderWindow* new_window, float new_speed)
 }
 
 int Ball::onCollisionEnter(AABB a, AABB b){
-	std::cout << "BALL collision entered\n";
 	float difXright = (a.min.x - b.max.x);
 	float difXleft = (a.max.x - b.min.x);
 	float difX = std::min(abs(difXleft), abs(difXright));
@@ -19,13 +18,13 @@ int Ball::onCollisionEnter(AABB a, AABB b){
 	if (difX < difY) {
 		//vertical collision
 		direction.x = -direction.x;
-		color = sf::Color(0, 255, 0, 255);
-		return 1;
+		//color = sf::Color(0, 255, 0, 255);
+		return 2;
 	}
 	else {
 		//horizontal collision
 		direction.y = -direction.y;
-		color = sf::Color(0, 0, 255, 255);
-		return 2;
+		//color = sf::Color(0, 0, 255, 255);
+		return 3;
 	}
 }

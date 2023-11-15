@@ -9,7 +9,8 @@ Canon::Canon(float new_rotation_speed, sf::Vector2f new_size, sf::RenderWindow* 
 	//size = sf::Vector2f(100, 10);
 	size = new_size;
 	window = new_window;
-	rectangle.setOrigin(size.x / 2, 0);
+	rectangle.setOrigin(size.x, 0);
+
 	pos.x = window->getSize().x/2;
 	pos.y = window->getSize().y;
 }
@@ -30,7 +31,7 @@ void Canon::LookAt(sf::Vector2i mousePos) {
 	rotation_angle = -Math::radToDeg(angle);
 }
 
-void Canon::Shoot(std::vector<GameObject>* gameObjectsList) {
+void Canon::Shoot(std::vector<GameObject*>* gameObjectsList) {
 	sf::Vector2f size(20, 20);
 	Ball* ball = new Ball(size, window, 100.0f);
 	ball->color = sf::Color(rand() % 255, rand() % 255, rand() % 255, 255);
@@ -39,7 +40,7 @@ void Canon::Shoot(std::vector<GameObject>* gameObjectsList) {
 	//ball->setOrigin(size.x, size.y);
 	ball->direction = sf::Vector2f(cos(Math::degToRad(rotation_angle+90)),sin(Math::degToRad(rotation_angle+90)));
 	ball->speed = 1000.0f;
-	gameObjectsList->push_back(*ball);
+	gameObjectsList->push_back(ball);
 }
 
 Canon::~Canon() {

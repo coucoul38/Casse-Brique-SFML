@@ -23,7 +23,6 @@ public:
 	sf::Vector2f direction;
 	sf::Vector2f normalized_direction;
 	float speed;
-	//float rotation;
 	std::string shape;
 	sf::RectangleShape rectangle;
 	AABB bounding_box;
@@ -43,9 +42,9 @@ public:
 	virtual int Update(float deltaTime);
 
 	int AABBCollision(GameObject* otherObject);
-	virtual int onCollisionEnter(AABB a, AABB b) { std::cout << "onCollisionEnter" << std::endl; return 0; };
-	virtual int onCollisionStay(AABB a, AABB b) { std::cout << "onCollisionStay" << std::endl; return 0; };
-	virtual int onCollisionExit(AABB a, AABB b) { std::cout << "onCollisionExit" << std::endl; return 0; };
+	virtual int onCollisionEnter(AABB a, AABB b) { /*std::cout << "onCollisionEnter" << std::endl;*/ return 0; };
+	virtual int onCollisionStay(AABB a, AABB b) { /*std::cout << "onCollisionStay" << std::endl; */ return 0; };
+	virtual int onCollisionExit(AABB a, AABB b) { /*std::cout << "onCollisionExit" << std::endl;*/ return 0; };
 
 	~GameObject();
 };
