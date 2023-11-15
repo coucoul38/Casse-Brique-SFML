@@ -5,6 +5,28 @@
 #include <iostream> 
 #include "Block.h"
 #include "Canon.h"
+#include <fstream>
+
+
+std::vector<std::vector<int>> readFile(std::string fileName) {
+    std::ifstream myFile;
+    myFile.open(fileName);
+    std::string line;
+    std::vector<std::vector<int>> listOfBlock;
+    while (std::getline(myFile, line))
+    {
+        std::vector<int> l;
+        for (int i = 0; i < line.size(); i++)
+        {
+            if (line[i] != ' ') {
+                l.push_back(line[i] - '0');
+            }
+        }
+        listOfBlock.push_back(l);
+    }
+    myFile.close();
+    return listOfBlock;
+}
 
 int main(int argc, char** argv)
 {
@@ -20,7 +42,7 @@ int main(int argc, char** argv)
 
     sf::RenderWindow oWindow(sf::VideoMode(fWidth, fHeight), "SFML");// , sf::Style::Fullscreen, settings);
 
-    std::vector<std::vector<int>> listOfBlock = { {0,0,0,0} ,{0,1,1,0} };
+    std::vector<std::vector<int>> listOfBlock=readFile("level2.txt");
 
     std::vector<GameObject> gameObjectList;
     
