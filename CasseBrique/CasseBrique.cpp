@@ -145,7 +145,7 @@ int main(int argc, char** argv)
 
         
         //check if ball already fired
-        canFire = canon.HasBall() == false;
+        canFire = canon.HasBalls() == false;
         if (canFire){
             if(combo>=3)
                 //charge ultimate with combo
@@ -180,20 +180,24 @@ int main(int argc, char** argv)
         sf::Vector2i mouse_pos = sf::Mouse::getPosition(*&oWindow);
         canon.LookAt(mouse_pos);
 
-        Ball* ball = canon.GetBall();
+        std::vector<Ball*> balls = canon.GetBalls();
 
-        if (ball != nullptr) 
+        if (balls.size()!=0) 
         {
-            ball->Move(fDeltaTime);
-
-            ball->AABBCollision(&oLeftBorder);
-            ball->AABBCollision(&oTopBorder);
-            ball->AABBCollision(&oRightBorder);
-            
-            for (int i = 0; i < gameObjectList.size(); i++)
+            for (int i = 0; i < balls.size(); i++)
             {
-                ball->AABBCollision(gameObjectList[i]);
+                balls[i]->Move(fDeltaTime);
+
+                balls[i]->AABBCollision(&oLeftBorder);
+                balls[i]->AABBCollision(&oTopBorder);
+                balls[i]->AABBCollision(&oRightBorder);
+
+                for (int i = 0; i < gameObjectList.size(); i++)
+                {
+                    balls[i]->AABBCollision(gameObjectList[i]);
+                }
             }
+            
         }
 
         /*
@@ -256,8 +260,13 @@ int main(int argc, char** argv)
             gameObjectList[i]->Draw();
         }
 
-        if(ball != nullptr)
-            ball->Draw();
+        if (balls.size() != 0)
+        {
+            for (int i = 0; i < balls.size(); i++)
+            {
+                balls[i]->Draw();
+            }
+        }
 
         canon.Draw();
 		oWindow.draw(comboText);

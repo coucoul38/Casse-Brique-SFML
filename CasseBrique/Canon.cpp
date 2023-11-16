@@ -7,8 +7,6 @@
 
 Canon::Canon(float x, float y, float width, float height, sf::RenderWindow* window)
 	:GameObject(x, y, width, height, 0.f, window) {
-
-	ball = nullptr;
 }
 
 int Canon::Update(float deltaTime) {
@@ -44,17 +42,17 @@ void Canon::LookAt(sf::Vector2i mousePos) {
 }
 
 
-bool Canon::HasBall()
+bool Canon::HasBalls()
 {
-	return ball != nullptr;
+	return (balls.size() != 0);
 }
 
 void Canon::Shoot(bool rainbow) {
 	
-	if (HasBall())
+	if (HasBalls())
 		return;
 
-	ball = new Ball(-1,-1, 20.f, 500.0f, m_window);
+	Ball* ball = new Ball(-1,-1, 20.f, 500.0f, m_window);
 
 	ball->setColor(sf::Color(255, 255, 255, 255));
 	if (rainbow) 
@@ -68,26 +66,28 @@ void Canon::Shoot(bool rainbow) {
 	ball->setPosition(position.x, position.y, 0.5f, 1.f);
 	
 	ball->setDirection(m_direction);
+	balls.push_back(ball);
 }
 void Canon::ShootSecondary(std::vector<GameObject*>* gameObjectsList) {
-	/*
 	sf::Vector2f size(500, 10);
-	Block* block = new Block(size, window, -1);
+	sf::Vector2f position = getPosition(0.5f, 1.f);
+	Block* block = new Block(position.x, position.y, size.x, size.y, -1, m_window);
 	//sf::Color(rand() % 255, rand() % 255, rand() % 255, 255);
-	block->color = sf::Color(255, 255, 255, 255);
-	block->rectangle.setOrigin(size.x / 2, size.y / 2);
-	block->Teleport(pos.x - size.x, pos.y - size.y);
-	//ball->setOrigin(size.x, size.y);
-	block->direction = sf::Vector2f(cos(Math::degToRad(rotation_angle + 90)), sin(Math::degToRad(rotation_angle + 90)));
-	block->speed = 2000.0f;
+	block->setColor(sf::Color(255, 255, 255, 255));
+	//block->rectangle.setOrigin(size.x / 2, size.y / 2);
+	//block->Teleport(pos.x - size.x, pos.y - size.y);
+	//ball->setOrigin(size.x, size.y
+
+	block->setDirection(m_direction);
+	//block->direction = sf::Vector2f(cos(Math::degToRad(rotation_angle + 90)), sin(Math::degToRad(rotation_angle + 90)));
+	//block->speed = 2000.0f;
 	gameObjectsList->push_back(block);
-*/
 }
 
 
-Ball* Canon::GetBall()
+std::vector<Ball*> Canon::GetBalls()
 {
-	return ball;
+	return balls;
 }
 
 Canon::~Canon() {

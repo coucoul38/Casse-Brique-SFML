@@ -9,7 +9,7 @@ class Ball;
 class Canon : public GameObject
 {
 private:
-	Ball* ball;
+	std::vector<Ball*> balls;
 
 public:
 	float rotation_speed;
@@ -20,9 +20,9 @@ public:
 	void Shoot(bool rainbow);
 	void ShootSecondary(std::vector<GameObject*>* gameObjectsList);
 
-	Ball* GetBall();
+	std::vector<Ball*> GetBalls();
 
-	bool HasBall();
+	bool HasBalls();
 
 	~Canon();
 };
