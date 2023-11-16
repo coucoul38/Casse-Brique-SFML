@@ -32,15 +32,12 @@ std::vector<std::vector<int>> readFile(std::string fileName) {
 
 int main(int argc, char** argv)
 {
-
-
     //turn on antialiasing and create window
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
 
     int fWidth = 800;//sf::VideoMode::getDesktopMode().width
     int fHeight = 600;//sf::VideoMode::getDesktopMode().height
-
 
     sf::RenderWindow oWindow(sf::VideoMode(fWidth, fHeight), "SFML");// , sf::Style::Fullscreen, settings);
 
@@ -55,7 +52,7 @@ int main(int argc, char** argv)
             if (listOfBlock[i][j]!=0)
             {
                 Block* blockTest = new Block(sizeOfBlock, &oWindow, listOfBlock[i][j]);
-                blockTest->pos = sf::Vector2f(j*sizeOfBlock.x+10*j, i*sizeOfBlock.y+10*i);
+                blockTest->pos = sf::Vector2f(j*sizeOfBlock.x+10*j+5, i*sizeOfBlock.y+10*i+5);
                 gameObjectList.push_back(blockTest);
             }
         }
@@ -171,9 +168,12 @@ int main(int argc, char** argv)
                     sf::Vector2f fDistance(gameObjectList[i]->pos.x - gameObjectList[j]->pos.x, gameObjectList[i]->pos.y - gameObjectList[j]->pos.y);
                     float normDistance = sqrt(fDistance.x * fDistance.x + fDistance.y * fDistance.y);
                     if (normDistance > 0) {
-                        if (gameObjectList[i]->AABBCollision(gameObjectList[j]) == 1) {
-                            //Kill blocks below 1HP
-                            gameObjectList.erase(gameObjectList.begin() + i);
+                        //only test collision for balls
+                        if (gameObjectList[i]->shape == "circle" || gameObjectList[j]->shape == "circle") {
+                            if (gameObjectList[i]->AABBCollision(gameObjectList[j]) == 1) {
+                                //Kill blocks below 1HP
+                                gameObjectList.erase(gameObjectList.begin() + i);
+                            }
                         }
                     }
                 }

@@ -79,6 +79,22 @@ void GameObject::Move(float deltaTime) {
 void GameObject::Teleport(int x, int y) {
 	pos.x = x;
 	pos.y = y;
+
+	//update bounding box
+	sf::Vector2f posMax;
+	float radius = std::max(size.x, size.y) / 2;
+	if (shape == "circle") {
+		posMax.x = pos.x + radius * 2;
+		posMax.y = pos.y + radius * 2;
+		bounding_box.min = pos;
+		bounding_box.max = posMax;
+	}
+	else {
+		posMax.x = pos.x + size.x;
+		posMax.y = pos.y + size.y;
+		bounding_box.min = pos;
+		bounding_box.max = posMax;
+	}
 }
 
 int GameObject::Update(float deltaTime) {
