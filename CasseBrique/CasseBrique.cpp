@@ -31,6 +31,19 @@ std::vector<std::vector<int>> readFile(std::string fileName) {
     return listOfBlock;
 }
 
+std::string readBestCombo(std::string fileName) {
+    std::ifstream myFile;
+    myFile.open(fileName);
+    std::string line;
+    std::string returnValue;
+    while (std::getline(myFile, line))
+    {
+        returnValue = line;
+    }
+    myFile.close();
+    return returnValue;
+}
+
 void writeFile(std::string fileName, int combo) {
     std::fstream myFile;
     myFile.open(fileName, std::ios::out | std::ios::app);
@@ -69,6 +82,11 @@ int main(int argc, char** argv)
     ultimateText.setString("{Ultimate charge:}");
     ultimateText.setCharacterSize(25);
     ultimateText.setFillColor(sf::Color(255, 255, 255, 255));
+
+    sf::Text maxCombo;
+    maxCombo.setFont(font);
+    maxCombo.setCharacterSize(25);
+    maxCombo.setFillColor(sf::Color(255, 255, 255, 255));
 
     //turn on antialiasing and create window
     sf::ContextSettings settings;
@@ -277,6 +295,8 @@ int main(int argc, char** argv)
 		comboText.setString("{Combo: " + std::to_string(combo)+"]");
         ultimateText.setString("{Ultimate " + std::to_string(ultimateTime)+"]");
         ultimateText.setPosition(0, oWindow.getSize().y - 50);
+	maxCombo.setString("{Max Combo " + readBestCombo("Combo.txt") + "]");
+        maxCombo.setPosition(0, oWindow.getSize().y - 100);
         writeFile("combo.txt",combo);
         //DRAW ===========================
         oWindow.clear(sf::Color(30,30,45,255));
@@ -294,7 +314,8 @@ int main(int argc, char** argv)
         /*if (balls.size() > 0){}*/
 
         canon.Draw();
-		oWindow.draw(comboText);
+	oWindow.draw(comboText);
+	oWindow.draw(maxCombo)
         oWindow.draw(ultimateText);
         oWindow.display();
         // ===============================
