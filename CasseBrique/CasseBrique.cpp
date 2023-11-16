@@ -238,8 +238,17 @@ int main(int argc, char** argv)
                     }
                 }
             }
+    
+        }
+
+        for (size_t i = 0; i < gameObjectList.size();)
+        {
             if (gameObjectList[i]->CheckOutOfBounds()) {
+                //std::cout << "A";
                 gameObjectList.erase(gameObjectList.begin() + i);
+            }
+            else {
+                i++;
             }
         }
 
