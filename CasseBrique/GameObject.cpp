@@ -83,6 +83,10 @@ void GameObject::setColor(sf::Color color)
 	m_shape->setFillColor(color);
 }
 
+void GameObject::setSpeed(float speed) {
+	m_speed = speed;
+}
+
 void GameObject::Draw()
 {
 	m_window->draw(*m_shape);

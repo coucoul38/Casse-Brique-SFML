@@ -238,12 +238,15 @@ int main(int argc, char** argv)
             }
         }
 
+        for (int i = 0; i < gameObjectList.size(); i++)
+        {
+            gameObjectList[i]->Move(fDeltaTime);
+        }
+
         for (int i = 0; i < balls.size();)
         {
             if (balls[i]->CheckOutOfBounds()) {
-                std::cout << balls.size()<< "i: "<<i<<"\n";
                 balls.erase(balls.begin() + i);
-                std::cout << balls.size() << "i: " << i << "\n";
             }
             else {
                 i++;

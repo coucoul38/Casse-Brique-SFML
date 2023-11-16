@@ -64,24 +64,21 @@ void Canon::Shoot(bool rainbow) {
 	position.x += m_direction.x * m_size.y;
 	position.y += m_direction.y * m_size.y;
 	ball->setPosition(position.x, position.y, 0.5f, 1.f);
-	
 	ball->setDirection(m_direction);
 	balls.push_back(ball);
 }
 void Canon::ShootSecondary(std::vector<GameObject*>* gameObjectsList) {
-	sf::Vector2f size(500, 10);
-	sf::Vector2f position = getPosition(0.5f, 1.f);
-	Block* block = new Block(position.x, position.y, size.x, size.y, -1, m_window);
-	//sf::Color(rand() % 255, rand() % 255, rand() % 255, 255);
-	block->setColor(sf::Color(255, 255, 255, 255));
-	//block->rectangle.setOrigin(size.x / 2, size.y / 2);
-	//block->Teleport(pos.x - size.x, pos.y - size.y);
-	//ball->setOrigin(size.x, size.y
+	GameObject* arc = new GameObject(-1, -1, 500, 10, 2000.f, m_window);
+	arc->setColor(sf::Color(255, 255, 255, 255));
 
-	block->setDirection(m_direction);
+	sf::Vector2f position = getPosition(0.5f, 1.f);
+	position.x += m_direction.x * m_size.y;
+	position.y += m_direction.y * m_size.y;
+	arc->setPosition(position.x, position.y, 0.5f, 1.f);
+	arc->setDirection(m_direction);
 	//block->direction = sf::Vector2f(cos(Math::degToRad(rotation_angle + 90)), sin(Math::degToRad(rotation_angle + 90)));
-	//block->speed = 2000.0f;
-	gameObjectsList->push_back(block);
+	arc->setSpeed(2000.0f);
+	gameObjectsList->push_back(arc);
 }
 
 

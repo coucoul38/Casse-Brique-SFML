@@ -36,9 +36,9 @@ public:
 	void setDirection(sf::Vector2f direction);
 	void multiplyDirection(float x, float y);
 	void setColor(sf::Color color);
-	
+	void setSpeed(float speed);
+
 	void Move(float deltaTime);
-	void Teleport(int x, int y);
 	void Draw();
 
 
