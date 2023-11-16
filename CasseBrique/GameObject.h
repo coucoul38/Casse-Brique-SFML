@@ -16,29 +16,35 @@ typedef struct
 
 class GameObject
 {
+protected:
+	sf::Vector2f m_size;
+	sf::Vector2f m_direction;
+	float m_speed;
+	AABB m_bounding_box;
+	float m_angle;
+	std::vector<GameObject*> m_collidedWith;
+	sf::RenderWindow* m_window;
+	sf::Shape* m_shape;
+
 public:
-	sf::Vector2f pos;
-	sf::Vector2f size;
-	sf::Color color;
-	sf::Vector2f direction;
-	sf::Vector2f normalized_direction;
-	float speed;
-	std::string shape;
-	sf::RectangleShape rectangle;
-	AABB bounding_box;
-	float rotation_angle;
-	std::vector<GameObject*> collidedWith;
-	bool collisionHandled;
 
-	sf::RenderWindow* window;
+	GameObject(float x, float y, float width, float height, float speed, sf::RenderWindow* window);
+	GameObject(float x, float y, float radius, float speed, sf::RenderWindow* window);
 
-	GameObject(std::string new_shape, sf::Vector2f new_size, sf::RenderWindow* new_window, float new_speed);
+	void setPosition(float x, float y, float ratioX = 0.5f, float ratioY = 0.5f);
+	sf::Vector2f getPosition(float ratioX = 0.5f, float ratioY = 0.5f);
+	void setDirection(sf::Vector2f direction);
+	void multiplyDirection(float x, float y);
+	void setColor(sf::Color color);
+	
 	void Move(float deltaTime);
 	void Teleport(int x, int y);
-	virtual int Draw();
+	void Draw();
+
 
 	bool CheckOutOfBounds();
 	void Rotate(float angle);
+	
 	virtual int Update(float deltaTime);
 
 	int AABBCollision(GameObject* otherObject);

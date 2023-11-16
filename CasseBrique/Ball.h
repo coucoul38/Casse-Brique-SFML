@@ -4,6 +4,6 @@
 class Ball : public GameObject
 {
 public:
-	Ball(sf::Vector2f new_size, sf::RenderWindow* new_window, float new_speed);
+	Ball(float x, float y, float radius, float speed, sf::RenderWindow* window);
 	int onCollisionEnter(AABB a, AABB b) override;
 };

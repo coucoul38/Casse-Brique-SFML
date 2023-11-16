@@ -4,10 +4,11 @@
 class Block : public GameObject
 {
 private:
-	
+	int m_HP;
+
 public:
-	int HP;
-	Block(sf::Vector2f new_size, sf::RenderWindow* new_window, int new_HP);
-	int Update(float deltaTime) override;
+	
+	Block(float x, float y, float width, float height, int HP, sf::RenderWindow* window);
+	void setHP(int HP);
 	int onCollisionEnter(AABB a, AABB b) override;
 };

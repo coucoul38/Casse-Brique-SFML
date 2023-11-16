@@ -41,7 +41,7 @@ void writeFile(std::string fileName, int combo) {
 			myFile << std::to_string(combo);
 		}
 		else if (std::stoi(line) < combo) {
-            std::cout << "new best combo";
+            //std::cout << "new best combo";
             myFile.close();
             myFile.open(fileName, std::ofstream::out | std::ofstream::trunc);
 			myFile << std::to_string(combo);
@@ -74,7 +74,7 @@ int main(int argc, char** argv)
     int fWidth = sf::VideoMode::getDesktopMode().width;
     int fHeight = sf::VideoMode::getDesktopMode().height;
 
-    sf::RenderWindow oWindow(sf::VideoMode(fWidth, fHeight), "SFML" , sf::Style::Fullscreen, settings);
+    sf::RenderWindow oWindow(sf::VideoMode(fWidth, fHeight), "SFML");
 
     std::vector<std::vector<int>> listOfBlock=readFile("level2.txt");
 
@@ -91,24 +91,25 @@ int main(int argc, char** argv)
         for (int j = 0; j < listOfBlock[i].size(); j++) {
             if (listOfBlock[i][j]!=0)
             {
-                Block* blockTest = new Block(sizeOfBlock, &oWindow, listOfBlock[i][j]);
-                blockTest->pos = sf::Vector2f(j*sizeOfBlock.x+3*j+1, i*sizeOfBlock.y+3*i+3);
+                Block* blockTest = new Block(-1, -1, sizeOfBlock.x, sizeOfBlock.y, listOfBlock[i][j], &oWindow);
+                
+                float x = j * sizeOfBlock.x + 3 * j + 1;
+                float y = i * sizeOfBlock.y + 3 * i + 3;
+
+                blockTest->setPosition(x, y, 0.f, 0.f);
+
                 gameObjectList.push_back(blockTest);
             }
         }
     }
 
-    GameObject oTopBorder = GameObject("rectangle", sf::Vector2f(oWindow.getSize().x, 1.0f), &oWindow, 0.0f);
-    oTopBorder.pos = sf::Vector2f(0, 0);
-    GameObject oLeftBorder = GameObject("rectangle", sf::Vector2f(1.0f, oWindow.getSize().y), &oWindow, 0.0f);
-    oLeftBorder.pos = sf::Vector2f(-1.0f, 0);
-    GameObject oRightBorder = GameObject("rectangle", sf::Vector2f(1.0f, oWindow.getSize().y), &oWindow, 0.0f);
-    oRightBorder.pos = sf::Vector2f(oWindow.getSize().x, 0);
+    GameObject oTopBorder = GameObject(0.f, 0.f, oWindow.getSize().x, 1.0f, 0.f, &oWindow);
+    GameObject oLeftBorder = GameObject(-1.0f, 0, 1.0f, oWindow.getSize().y,0.f, &oWindow);
+    GameObject oRightBorder = GameObject(oWindow.getSize().x, 0.f, 1.0f, oWindow.getSize().y, 0.f, &oWindow);
 
-    sf::Vector2f canonSize(50, 150);
-    Canon canon = Canon(1, canonSize, &oWindow);
-    canon.color = sf::Color(100, 125, 255, 255);
-    sf::Vector2f size2(100, 100);
+    Canon canon = Canon(-1, -1, 50, 150, &oWindow);
+    canon.setPosition(oWindow.getSize().x / 2.f, oWindow.getSize().y, 0.5f, 1.f);
+    canon.setColor(sf::Color(100, 125, 255, 255));
  
     InputManager oTestInputManager(&oWindow);
 
@@ -144,16 +145,7 @@ int main(int argc, char** argv)
 
         
         //check if ball already fired
-        Ball* fakeBall = new Ball(sf::Vector2f(0,0),&oWindow,0);
-        canFire = true;
-        //find balls in gameObject list
-        for (int i = 0; i < gameObjectList.size(); i++)
-        {
-            if (gameObjectList[i]->shape == "circle") {
-                canFire = false;
-                //its a ball !
-            }
-        }
+        canFire = canon.HasBall() == false;
         if (canFire){
             if(combo>=3)
                 //charge ultimate with combo
@@ -162,11 +154,11 @@ int main(int argc, char** argv)
         }
         //Input Manager
         if (oTestInputManager.isMousePressed() == 1 && canFire) {
-            canon.Shoot(&gameObjectList, false);
+            canon.Shoot(false);
         }
         else if (oTestInputManager.isMousePressed() == 3 && ultimateTime > 0.0f) {
             if (fShootTimer >= 0.2f) {
-                canon.Shoot(&gameObjectList, true);
+                canon.Shoot(true);
                 fShootTimer = 0.0f;
             }
             ultimateTime -= fDeltaTime;
@@ -187,21 +179,24 @@ int main(int argc, char** argv)
 
         sf::Vector2i mouse_pos = sf::Mouse::getPosition(*&oWindow);
         canon.LookAt(mouse_pos);
-        canon.pos.x = oWindow.getSize().x / 2;
-        canon.pos.y = oWindow.getSize().y;
-        canon.rectangle.setOrigin(canon.size.x / 2, 0);
 
-        //update window borders
-        oTopBorder.size = sf::Vector2f(oWindow.getSize().x, 1.0f);
-        oLeftBorder.size = sf::Vector2f(1.0f, oWindow.getSize().y);
-        oRightBorder.size = sf::Vector2f(1.0f, oWindow.getSize().y);
-        oRightBorder.Teleport(oWindow.getSize().x, 0);
-        oTopBorder.Teleport(0,0);
-        oRightBorder.Teleport(oWindow.getSize().x, 0);
-        oRightBorder.Move(fDeltaTime);
-        oLeftBorder.Move(fDeltaTime);
-        oTopBorder.Move(fDeltaTime);
+        Ball* ball = canon.GetBall();
 
+        if (ball != nullptr) 
+        {
+            ball->Move(fDeltaTime);
+
+            ball->AABBCollision(&oLeftBorder);
+            ball->AABBCollision(&oTopBorder);
+            ball->AABBCollision(&oRightBorder);
+            
+            for (int i = 0; i < gameObjectList.size(); i++)
+            {
+                ball->AABBCollision(gameObjectList[i]);
+            }
+        }
+
+        /*
         for (int i = 0; i < gameObjectList.size(); i++)
         {
             gameObjectList[i]->Move(fDeltaTime);
@@ -211,6 +206,7 @@ int main(int argc, char** argv)
             gameObjectList[i]->AABBCollision(&oTopBorder);
             gameObjectList[i]->AABBCollision(&oRightBorder);
             oRightBorder.AABBCollision(gameObjectList[i]);
+
 
             for (int j = 0; j < gameObjectList.size(); j++) {
                 if (j != i) {
@@ -241,7 +237,8 @@ int main(int argc, char** argv)
             if (gameObjectList[i]->CheckOutOfBounds()) {
                 gameObjectList.erase(gameObjectList.begin() + i);
             }
-        }
+            
+        }*/
 
         // ===============================
         
@@ -258,6 +255,10 @@ int main(int argc, char** argv)
         {
             gameObjectList[i]->Draw();
         }
+
+        if(ball != nullptr)
+            ball->Draw();
+
         canon.Draw();
 		oWindow.draw(comboText);
         oWindow.draw(ultimateText);

@@ -8,94 +8,92 @@
 #include <iostream>
 #include "Math.h"
 
-GameObject::GameObject(std::string new_shape, sf::Vector2f new_size, sf::RenderWindow* new_window, float new_speed) {
-	shape = new_shape;
-	size = new_size;
-	window = new_window;
-	speed = new_speed;
-	//initialize bounding box
-	sf::Vector2f posMax;
-	float radius = std::max(size.x, size.y) / 2;
-	if (shape == "circle") {
-		posMax.x = pos.x + radius * 2;
-		posMax.y = pos.y + radius * 2;
-		bounding_box.min = pos;
-		bounding_box.max = posMax;
-	}
-	else {
-		posMax.x = pos.x + size.x;
-		posMax.y = pos.y + size.y;
-		bounding_box.min = pos;
-		bounding_box.max = posMax;
-	}
-	rectangle.setOrigin(size.x / 2, 0);
+GameObject::GameObject(float x, float y, float width, float height, float speed, sf::RenderWindow* window) 
+{
+	//RECTANGLE
+	m_shape = new sf::RectangleShape(sf::Vector2f(width, height));
+	m_speed = speed;
+	m_size.x = width;
+	m_size.y = height;
+
+	m_window = window;
+
+	setPosition(x, y);
 }
 
-int GameObject::Draw() {
-	if (shape=="circle") {
-		float radius = std::max(size.x,size.y)/2;
-		std::size_t pointCount = 30;
-		sf::CircleShape circle = sf::CircleShape::CircleShape(radius, pointCount);
-		circle.setFillColor(color);
-		circle.setPosition(pos);
-		window->draw(circle);
-	}
-	else if (shape == "rectangle") {
-		rectangle = sf::RectangleShape::RectangleShape(size);
-		rectangle.setFillColor(color);
-		rectangle.setPosition(pos);
-		rectangle.setRotation(rotation_angle);
+GameObject::GameObject(float x, float y, float radius, float speed, sf::RenderWindow* window)
+{
+	//CIRCLE
+	m_shape = new sf::CircleShape(radius);
+	m_speed = speed;
+	m_size.x = radius * 2;
+	m_size.y = radius * 2;
 
-		window->draw(rectangle);
-	}
-	else {
-		return -1;
-	}
-	return 0;
+	m_window = window;
+
+	setPosition(x, y);
+}
+
+
+void GameObject::setPosition(float x, float y, float ratioX, float ratioY)
+{
+	float originX = ratioX * m_size.x;
+	float originY = ratioY * m_size.y;
+
+	m_shape->setOrigin(originX, originY);
+	m_shape->setPosition(x, y);
+
+	m_bounding_box.min.x = x - originX;
+	m_bounding_box.min.y = y - originY;
+	m_bounding_box.max.x = m_bounding_box.min.x + m_size.x;
+	m_bounding_box.max.y = m_bounding_box.min.y + m_size.y;
+}
+
+
+sf::Vector2f GameObject::getPosition(float ratioX, float ratioY)
+{
+	sf::Vector2f origin = m_shape->getOrigin();
+	sf::Vector2f position = m_shape->getPosition();
+
+	position.x -= origin.x;
+	position.y -= origin.y;
+
+	float originX = ratioX * m_size.x;
+	float originY = ratioY * m_size.y;
+
+	position.x += originX;
+	position.y += originY;
+
+	return position;
+}
+
+void GameObject::setDirection(sf::Vector2f direction)
+{
+	m_direction = Math::normalize(direction);
+}
+
+void GameObject::multiplyDirection(float x, float y)
+{
+	m_direction.x *= x;
+	m_direction.y *= y;
+}
+
+void GameObject::setColor(sf::Color color) 
+{
+	m_shape->setFillColor(color);
+}
+
+void GameObject::Draw()
+{
+	m_window->draw(*m_shape);
 }
 
 void GameObject::Move(float deltaTime) {
-	normalized_direction = Math::normalize(direction);
-	
-	pos.x += normalized_direction.x * deltaTime * speed;
-	pos.y += normalized_direction.y * deltaTime * speed;
+	sf::Vector2f position = getPosition();
 
-	//update bounding box
-	sf::Vector2f posMax;
-	float radius = std::max(size.x, size.y) / 2;
-	if (shape == "circle") {
-		posMax.x = pos.x + radius * 2;
-		posMax.y = pos.y + radius * 2;
-		bounding_box.min = pos;
-		bounding_box.max = posMax;
-	}
-	else {
-		posMax.x = pos.x + size.x;
-		posMax.y = pos.y + size.y;
-		bounding_box.min = pos;
-		bounding_box.max = posMax;
-	}
-}
+	position += m_direction * deltaTime * m_speed;
 
-void GameObject::Teleport(int x, int y) {
-	pos.x = x;
-	pos.y = y;
-
-	//update bounding box
-	sf::Vector2f posMax;
-	float radius = std::max(size.x, size.y) / 2;
-	if (shape == "circle") {
-		posMax.x = pos.x + radius * 2;
-		posMax.y = pos.y + radius * 2;
-		bounding_box.min = pos;
-		bounding_box.max = posMax;
-	}
-	else {
-		posMax.x = pos.x + size.x;
-		posMax.y = pos.y + size.y;
-		bounding_box.min = pos;
-		bounding_box.max = posMax;
-	}
+	setPosition(position.x, position.y);
 }
 
 int GameObject::Update(float deltaTime) {
@@ -106,64 +104,57 @@ int GameObject::Update(float deltaTime) {
 }
 
 void GameObject::Rotate(float angle) {
-	rotation_angle += angle;
+	m_angle += angle;
 }
 
 int GameObject::AABBCollision(GameObject* otherObject){
-	AABB a = bounding_box;
-	AABB b = otherObject->bounding_box;
+	AABB a = m_bounding_box;
+	AABB b = otherObject->m_bounding_box;
 
 	float d1x = b.min.x - a.max.x;
 	float d1y = b.min.y - a.max.y;
 	float d2x = a.min.x - b.max.x;
 	float d2y = a.min.y - b.max.y;
+
 	//system("cls");
 	if (d1x > 0.0f || d1y > 0.0f) {
-		auto it = std::find(collidedWith.begin(), collidedWith.end(), otherObject);
-		if (it != collidedWith.end()) 
+		auto it = std::find(m_collidedWith.begin(), m_collidedWith.end(), otherObject);
+		if (it != m_collidedWith.end())
 		{
 			this->onCollisionExit(a, b);
-			collidedWith.erase(it);
+			m_collidedWith.erase(it);
 		}
 		return 0;
 	}
 
 	if (d2x > 0.0f || d2y > 0.0f) {
-		auto it = std::find(collidedWith.begin(), collidedWith.end(), otherObject);
-		if (it != collidedWith.end()) 
+		auto it = std::find(m_collidedWith.begin(), m_collidedWith.end(), otherObject);
+		if (it != m_collidedWith.end())
 		{
 			this->onCollisionExit(a, b);
-			collidedWith.erase(it);
+			m_collidedWith.erase(it);
 		}
 		return 0;
 	}
 
 	//COLISION
 
-	auto it = std::find(collidedWith.begin(), collidedWith.end(), otherObject);
-	if (it != collidedWith.end()) 
+	auto it = std::find(m_collidedWith.begin(), m_collidedWith.end(), otherObject);
+	if (it != m_collidedWith.end())
 	{
 		this->onCollisionStay(a, b);
 		return 0;
 	}
 	
 	//if not already collided with that object
-	collidedWith.push_back(otherObject);
+	m_collidedWith.push_back(otherObject);
 
 	return this->onCollisionEnter(a, b);
 }
 
 bool GameObject::CheckOutOfBounds(){
-	sf::Vector2u windowSize = window->getSize();
-
-	if (pos.x >= windowSize.x ||( pos.x + size.x) <= 0 || pos.y >= windowSize.y || (pos.y + size.y) <= 0){
-		return true;
-	}
-	/*if (pos.y > windowSize.y) {
-		return true;
-	}*/
-
-	return false;
+	sf::Vector2u windowSize = m_window->getSize();
+	return (m_bounding_box.min.x >= windowSize.x || m_bounding_box.max.x <= 0 || m_bounding_box.min.y >= windowSize.y || m_bounding_box.max.y <= 0);
 }
 
 GameObject::~GameObject() {

@@ -5,13 +5,10 @@
 #include "Ball.h"
 #include "Block.h"
 
-Canon::Canon(float new_rotation_speed, sf::Vector2f new_size, sf::RenderWindow* new_window) 
-	:GameObject("rectangle", new_size, new_window, 0.0f) {
-	//size = sf::Vector2f(100, 10);
-	size = new_size;
-	window = new_window;
-	pos.x = window->getSize().x/2;
-	pos.y = window->getSize().y;
+Canon::Canon(float x, float y, float width, float height, sf::RenderWindow* window)
+	:GameObject(x, y, width, height, 0.f, window) {
+
+	ball = nullptr;
 }
 
 int Canon::Update(float deltaTime) {
@@ -20,31 +17,60 @@ int Canon::Update(float deltaTime) {
 }
 
 void Canon::LookAt(sf::Vector2i mousePos) {
-	sf::Vector2f oppositeCoordinates(mousePos.x - pos.x, window->getSize().y - mousePos.y);
-	sf::Vector2f adjacentCoordinates(mousePos.x - pos.x, pos.y);
+
+	float ratioX = 0.5f;
+	float ratioY = 1.f;
+
+	sf::Vector2f position = getPosition(0.5f, 1.f);
+
+	sf::Vector2f direction;
+	direction.x = mousePos.x - position.x;
+	direction.y = mousePos.y - position.y;
+
+	sf::Vector2f oppositeCoordinates(mousePos.x - position.x, m_window->getSize().y - mousePos.y);
+	sf::Vector2f adjacentCoordinates(mousePos.x - position.x, position.y);
 	
 	float opposite = Math::getNorm(oppositeCoordinates);
 	float adjacent = Math::getNorm(adjacentCoordinates);
 
-	float angle = atan2(mousePos.x - pos.x, mousePos.y - pos.y);
-	rotation_angle = -Math::radToDeg(angle);
+	float angle = atan2(mousePos.x - position.x, mousePos.y - position.y);
+
+	m_angle = -Math::radToDeg(angle);
+
+	m_shape->setOrigin(ratioX * m_size.x, ratioY * m_size.y);
+	m_shape->setRotation(180 + m_angle);
+
+	setDirection(direction);
 }
 
-void Canon::Shoot(std::vector<GameObject*>* gameObjectsList, bool rainbow) {
-	sf::Vector2f size(20, 20);
-	Ball* ball = new Ball(size, window, 100.0f);
-	ball->color = sf::Color(255, 255, 255, 255);
-	if (rainbow) {
-		ball->color = sf::Color(rand() % 255, rand() % 255, rand() % 255, 255);
+
+bool Canon::HasBall()
+{
+	return ball != nullptr;
+}
+
+void Canon::Shoot(bool rainbow) {
+	
+	if (HasBall())
+		return;
+
+	ball = new Ball(-1,-1, 20.f, 500.0f, m_window);
+
+	ball->setColor(sf::Color(255, 255, 255, 255));
+	if (rainbow) 
+	{
+		ball->setColor(sf::Color(rand() % 255, rand() % 255, rand() % 255, 255));
 	}
-	ball->Teleport(pos.x-size.x, pos.y-size.y);
-	//ball->setOrigin(size.x, size.y);
-	ball->direction = sf::Vector2f(cos(Math::degToRad(rotation_angle+90)),sin(Math::degToRad(rotation_angle+90)));
-	ball->speed = 1000.0f;
-	gameObjectsList->push_back(ball);
-}
 
+	sf::Vector2f position = getPosition(0.5f, 1.f);
+	position.x += m_direction.x * m_size.y;
+	position.y += m_direction.y * m_size.y;
+	ball->setPosition(position.x, position.y, 0.5f, 1.f);
+	
+	ball->setDirection(m_direction);
+}
 void Canon::ShootSecondary(std::vector<GameObject*>* gameObjectsList) {
+	/*
 	sf::Vector2f size(500, 10);
 	Block* block = new Block(size, window, -1);
 	//sf::Color(rand() % 255, rand() % 255, rand() % 255, 255);
@@ -55,6 +81,13 @@ void Canon::ShootSecondary(std::vector<GameObject*>* gameObjectsList) {
 	block->direction = sf::Vector2f(cos(Math::degToRad(rotation_angle + 90)), sin(Math::degToRad(rotation_angle + 90)));
 	block->speed = 2000.0f;
 	gameObjectsList->push_back(block);
+*/
+}
+
+
+Ball* Canon::GetBall()
+{
+	return ball;
 }
 
 Canon::~Canon() {

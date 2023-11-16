@@ -2,8 +2,8 @@
 #include <SFML/System/Vector2.hpp>
 #include <iostream>
 
-Ball::Ball(sf::Vector2f new_size, sf::RenderWindow* new_window, float new_speed)
-	: GameObject("circle", new_size, new_window, new_speed){
+Ball::Ball(float x, float y, float radius, float speed, sf::RenderWindow* window)
+	: GameObject(x, y, radius, speed, window){
 }
 
 int Ball::onCollisionEnter(AABB a, AABB b){
@@ -17,13 +17,14 @@ int Ball::onCollisionEnter(AABB a, AABB b){
 
 	if (difX < difY) {
 		//vertical collision
-		direction.x = -direction.x;
+		multiplyDirection(-1, 1);
 		//color = sf::Color(0, 255, 0, 255);
 		return 2;
 	}
 	else {
 		//horizontal collision
-		direction.y = -direction.y;
+
+		multiplyDirection(1, -1);
 		//color = sf::Color(0, 0, 255, 255);
 		return 3;
 	}
