@@ -315,7 +315,7 @@ int main(int argc, char** argv)
 
         canon.Draw();
 	oWindow.draw(comboText);
-	oWindow.draw(maxCombo)
+	oWindow.draw(maxCombo);
         oWindow.draw(ultimateText);
         oWindow.display();
         // ===============================
