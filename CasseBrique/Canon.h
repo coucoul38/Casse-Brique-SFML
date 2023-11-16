@@ -20,7 +20,7 @@ public:
 	void Shoot(bool rainbow);
 	void ShootSecondary(std::vector<GameObject*>* gameObjectsList);
 
-	std::vector<Ball*> GetBalls();
+	std::vector<Ball*>& GetBalls();
 
 	bool HasBalls();
 

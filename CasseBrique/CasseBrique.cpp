@@ -201,7 +201,7 @@ int main(int argc, char** argv)
         sf::Vector2i mouse_pos = sf::Mouse::getPosition(*&oWindow);
         canon.LookAt(mouse_pos);
 
-        std::vector<Ball*> balls = canon.GetBalls();
+        std::vector<Ball*>& balls = canon.GetBalls();
 
         if (balls.size()>0) 
         {
@@ -232,14 +232,18 @@ int main(int argc, char** argv)
                         break;
                     }
                 }
+                /*if (balls[i]->CheckOutOfBounds()) {
+                    balls.erase(balls.begin() + i);
+                }*/
             }
         }
 
         for (int i = 0; i < balls.size();)
         {
             if (balls[i]->CheckOutOfBounds()) {
-                std::cout << balls.size()<< "i: "<<i<<"\n";//"Removing your ball\n";
-                balls.erase(balls.begin() + 0);
+                std::cout << balls.size()<< "i: "<<i<<"\n";
+                balls.erase(balls.begin() + i);
+                std::cout << balls.size() << "i: " << i << "\n";
             }
             else {
                 i++;
@@ -315,7 +319,7 @@ int main(int argc, char** argv)
 
         canon.Draw();
 	oWindow.draw(comboText);
-	oWindow.draw(maxCombo)
+    oWindow.draw(maxCombo);
         oWindow.draw(ultimateText);
         oWindow.display();
         // ===============================

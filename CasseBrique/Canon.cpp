@@ -85,7 +85,7 @@ void Canon::ShootSecondary(std::vector<GameObject*>* gameObjectsList) {
 }
 
 
-std::vector<Ball*> Canon::GetBalls()
+std::vector<Ball*>& Canon::GetBalls()
 {
 	return balls;
 }
