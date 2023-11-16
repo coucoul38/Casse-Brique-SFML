@@ -5,8 +5,9 @@
 #include "Ball.h"
 #include "Block.h"
 
-Canon::Canon(float x, float y, float width, float height, sf::RenderWindow* window)
+Canon::Canon(float x, float y, float width, float height, sf::RenderWindow* window, std::vector<GameObject*>* gameObjectList)
 	:GameObject(x, y, width, height, 0.f, window) {
+	gameobjects = gameObjectList;
 }
 
 int Canon::Update(float deltaTime) {
@@ -47,9 +48,9 @@ bool Canon::HasBalls()
 	return (balls.size() > 0);
 }
 
-void Canon::Shoot(bool rainbow) {
+void Canon::Shoot(bool rainbow, bool ultimate) {
 	
-	if (HasBalls())
+	if (HasBalls() && !ultimate)
 		return;
 
 	Ball* ball = new Ball(-1,-1, 20.f, 500.0f, m_window);
@@ -66,8 +67,9 @@ void Canon::Shoot(bool rainbow) {
 	ball->setPosition(position.x, position.y, 0.5f, 1.f);
 	ball->setDirection(m_direction);
 	balls.push_back(ball);
+	//gameobjects->push_back(ball);
 }
-void Canon::ShootSecondary(std::vector<GameObject*>* gameObjectsList) {
+void Canon::ShootSecondary() {
 	GameObject* arc = new GameObject(-1, -1, 500, 10, 2000.f, m_window);
 	arc->setColor(sf::Color(255, 255, 255, 255));
 
@@ -78,7 +80,7 @@ void Canon::ShootSecondary(std::vector<GameObject*>* gameObjectsList) {
 	arc->setDirection(m_direction);
 	//block->direction = sf::Vector2f(cos(Math::degToRad(rotation_angle + 90)), sin(Math::degToRad(rotation_angle + 90)));
 	arc->setSpeed(2000.0f);
-	gameObjectsList->push_back(arc);
+	gameobjects->push_back(arc);
 }
 
 

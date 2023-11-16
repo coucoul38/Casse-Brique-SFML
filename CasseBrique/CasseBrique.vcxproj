@@ -147,6 +147,7 @@
     <ClInclude Include="Math.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="combo.txt" />
     <Text Include="level2.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

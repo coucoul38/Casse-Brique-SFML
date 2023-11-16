@@ -95,7 +95,7 @@ int main(int argc, char** argv)
     int fWidth = sf::VideoMode::getDesktopMode().width;
     int fHeight = sf::VideoMode::getDesktopMode().height;
 
-    sf::RenderWindow oWindow(sf::VideoMode(fWidth, fHeight), "SFML");
+    sf::RenderWindow oWindow(sf::VideoMode(fWidth, fHeight), "SFML", sf::Style::Fullscreen, settings);
 
     std::vector<std::vector<int>> listOfBlock=readFile("level2.txt");
 
@@ -128,7 +128,7 @@ int main(int argc, char** argv)
     GameObject oLeftBorder = GameObject(-1.0f, 0, 1.0f, oWindow.getSize().y,0.f, &oWindow);
     GameObject oRightBorder = GameObject(oWindow.getSize().x, 0.f, 1.0f, oWindow.getSize().y, 0.f, &oWindow);
 
-    Canon canon = Canon(-1, -1, 50, 150, &oWindow);
+    Canon canon = Canon(-1, -1, 50, 150, &oWindow, &gameObjectList);
     canon.setPosition(oWindow.getSize().x / 2.f, oWindow.getSize().y, 0.5f, 1.f);
     canon.setColor(sf::Color(100, 125, 255, 255));
  
@@ -175,11 +175,11 @@ int main(int argc, char** argv)
         }
         //Input Manager
         if (oTestInputManager.isMousePressed() == 1 && canFire) {
-            canon.Shoot(false);
+            canon.Shoot();
         }
         else if (oTestInputManager.isMousePressed() == 3 && ultimateTime > 0.0f) {
             if (fShootTimer >= 0.2f) {
-                canon.Shoot(true);
+                canon.Shoot(true,true);
                 fShootTimer = 0.0f;
             }
             ultimateTime -= fDeltaTime;
@@ -187,7 +187,7 @@ int main(int argc, char** argv)
         
         if (fTimer >= 2.0f) {
             if (oTestInputManager.isMousePressed() == 2) {
-                canon.ShootSecondary(&gameObjectList);
+                canon.ShootSecondary();
                 fTimer = 0.0f;
             }
         }
@@ -207,7 +207,6 @@ int main(int argc, char** argv)
         {
             for (int i = 0; i < balls.size(); i++)
             {
-                //std::cout << balls[i];
                 balls[i]->Move(fDeltaTime);
 
                 balls[i]->AABBCollision(&oLeftBorder);
@@ -219,9 +218,6 @@ int main(int argc, char** argv)
                     int collisionReturn = balls[i]->AABBCollision(gameObjectList[j]);
                     switch (collisionReturn)
                     {
-                    case 1:
-                        gameObjectList.erase (gameObjectList.begin() + i);
-                        break;
                     case 2:
                         combo++;
                         break;
@@ -230,6 +226,9 @@ int main(int argc, char** argv)
                         break;
                     default:
                         break;
+                    }
+                    if (gameObjectList[j]->AABBCollision(balls[i]) == 1) {
+                        gameObjectList.erase(gameObjectList.begin() + j);
                     }
                 }
                 /*if (balls[i]->CheckOutOfBounds()) {

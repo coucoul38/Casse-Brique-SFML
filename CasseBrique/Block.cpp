@@ -50,5 +50,7 @@ void Block::setHP( int HP )
 
 int Block::onCollisionEnter(AABB a, AABB b) {
 	setHP(m_HP - 1);
+	if (m_HP == 0)
+		return 1;
 	return 0;
 }

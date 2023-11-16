@@ -18,14 +18,12 @@ int Ball::onCollisionEnter(AABB a, AABB b){
 	if (difX < difY) {
 		//vertical collision
 		multiplyDirection(-1, 1);
-		//color = sf::Color(0, 255, 0, 255);
 		return 2;
 	}
 	else {
 		//horizontal collision
 
 		multiplyDirection(1, -1);
-		//color = sf::Color(0, 0, 255, 255);
 		return 3;
 	}
 }

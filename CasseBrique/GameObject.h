@@ -48,9 +48,9 @@ public:
 	virtual int Update(float deltaTime);
 
 	int AABBCollision(GameObject* otherObject);
-	virtual int onCollisionEnter(AABB a, AABB b) { /*std::cout << "onCollisionEnter" << std::endl;*/ return 0; };
-	virtual int onCollisionStay(AABB a, AABB b) { /*std::cout << "onCollisionStay" << std::endl; */ return 0; };
-	virtual int onCollisionExit(AABB a, AABB b) { /*std::cout << "onCollisionExit" << std::endl;*/ return 0; };
+	virtual int onCollisionEnter(AABB a, AABB b) { return 0; };
+	virtual int onCollisionStay(AABB a, AABB b) { return 0; };
+	virtual int onCollisionExit(AABB a, AABB b) { return 0; };
 
 	~GameObject();
 };
