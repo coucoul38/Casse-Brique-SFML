@@ -8,8 +8,7 @@
 #include <fstream>
 #include "Ball.h"
 #include <typeinfo>
-#include <vector>
-#include <algorithm>
+#include <string>
 
 
 std::vector<std::vector<int>> readFile(std::string fileName) {
@@ -38,18 +37,20 @@ void writeFile(std::string fileName, int combo) {
     myFile.close();
 	myFile.open(fileName, std::ios::in | std::ios::out | std::ios::app);
 	std::string line;
-    while (std::getline(myFile, line)){
-		if (line.empty()) {
-			myFile << std::to_string(combo);
-		}
-		else if (std::stoi(line) < combo) {
-            //std::cout << "new best combo";
-            myFile.close();
-            myFile.open(fileName, std::ofstream::out | std::ofstream::trunc);
-			myFile << std::to_string(combo);
-		}
+    int comboInFile = 0;
+    while (std::getline(myFile, line))
+    {
+        if (!line.empty())
+        {
+            comboInFile = std::stoi(line);
+        }
     }
- myFile.close();
+    if (comboInFile < combo) {
+        myFile.close();
+        myFile.open(fileName, std::ofstream::out | std::ofstream::trunc);
+        myFile << std::to_string(combo);
+    }
+    myFile.close();
 }
 
 int main(int argc, char** argv)
