@@ -41,4 +41,13 @@ namespace Math {
 	float radToDeg(float radians) {
 		return radians * 180/pi;
 	}
+
+	//float round(float number, int digits) {
+	//	// 37.66666 * 100 =3766.66
+	//	// 3766.66 + .5 =3767.16    for rounding off value
+	//	// then type cast to int so value is 3767
+	//	// then divided by 100 so the value converted into 37.67
+	//	float value = (int)(number * 100 /*+ (digits - 1 * 10)*/ + .5);
+	//	return (float)value / 100 /*+ (digits - 1 * 10)*/;
+	//}
 }

@@ -38,13 +38,12 @@ Block::Block(sf::Vector2f new_size, sf::RenderWindow* new_window, int new_HP)
 		color = sf::Color(0, 0, 0, 255);
 		break;
 	default:
-		color = sf::Color(0, 0, 0, 255);
 		break;
 	}
 }
 
 int Block::onCollisionEnter(AABB a, AABB b) {
-	//std::cout << "HP: " << HP << "\n";	
+	//std::cout << "HP: " << HP << "\n";
 	HP -= 1;
 	switch (HP)
 	{
@@ -79,8 +78,7 @@ int Block::onCollisionEnter(AABB a, AABB b) {
 		color = sf::Color(0, 0, 0, 255);
 		return 1;
 	default:
-		color = sf::Color(0, 0, 0, 255);
-		return 1;
+		break;
 	}
 	return 0;
 }

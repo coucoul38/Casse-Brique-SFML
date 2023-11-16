@@ -3,14 +3,13 @@
 #include <math.h>
 #include "Math.h"
 #include "Ball.h"
+#include "Block.h"
 
 Canon::Canon(float new_rotation_speed, sf::Vector2f new_size, sf::RenderWindow* new_window) 
 	:GameObject("rectangle", new_size, new_window, 0.0f) {
 	//size = sf::Vector2f(100, 10);
 	size = new_size;
 	window = new_window;
-	rectangle.setOrigin(size.x, 0);
-
 	pos.x = window->getSize().x/2;
 	pos.y = window->getSize().y;
 }
@@ -31,16 +30,31 @@ void Canon::LookAt(sf::Vector2i mousePos) {
 	rotation_angle = -Math::radToDeg(angle);
 }
 
-void Canon::Shoot(std::vector<GameObject*>* gameObjectsList) {
+void Canon::Shoot(std::vector<GameObject*>* gameObjectsList, bool rainbow) {
 	sf::Vector2f size(20, 20);
 	Ball* ball = new Ball(size, window, 100.0f);
-	ball->color = sf::Color(rand() % 255, rand() % 255, rand() % 255, 255);
-	float radius = std::max(size.x, size.y) / 2;
+	ball->color = sf::Color(255, 255, 255, 255);
+	if (rainbow) {
+		ball->color = sf::Color(rand() % 255, rand() % 255, rand() % 255, 255);
+	}
 	ball->Teleport(pos.x-size.x, pos.y-size.y);
 	//ball->setOrigin(size.x, size.y);
 	ball->direction = sf::Vector2f(cos(Math::degToRad(rotation_angle+90)),sin(Math::degToRad(rotation_angle+90)));
 	ball->speed = 1000.0f;
 	gameObjectsList->push_back(ball);
+}
+
+void Canon::ShootSecondary(std::vector<GameObject*>* gameObjectsList) {
+	sf::Vector2f size(500, 10);
+	Block* block = new Block(size, window, -1);
+	//sf::Color(rand() % 255, rand() % 255, rand() % 255, 255);
+	block->color = sf::Color(255, 255, 255, 255);
+	block->rectangle.setOrigin(size.x / 2, size.y / 2);
+	block->Teleport(pos.x - size.x, pos.y - size.y);
+	//ball->setOrigin(size.x, size.y);
+	block->direction = sf::Vector2f(cos(Math::degToRad(rotation_angle + 90)), sin(Math::degToRad(rotation_angle + 90)));
+	block->speed = 2000.0f;
+	gameObjectsList->push_back(block);
 }
 
 Canon::~Canon() {

@@ -30,8 +30,45 @@ std::vector<std::vector<int>> readFile(std::string fileName) {
     return listOfBlock;
 }
 
+void writeFile(std::string fileName, int combo) {
+    std::fstream myFile;
+    myFile.open(fileName, std::ios::out | std::ios::app);
+    myFile.close();
+	myFile.open(fileName, std::ios::in | std::ios::out | std::ios::app);/*
+	std::string line;
+    while (std::getline(myFile, line)){
+		if (line.empty()) {
+			myFile.open(fileName, std::ofstream::out | std::ofstream::trunc);
+            myFile.close();
+			myFile << std::to_string(combo);
+		}
+		else if (std::stoi(line) < combo) {
+            myFile.open(fileName, std::ofstream::out | std::ofstream::trunc);
+            myFile.close();
+			myFile << std::to_string(combo);
+		}
+		myFile.close();
+    }*/
+ myFile.close();
+}
+
 int main(int argc, char** argv)
 {
+    //Text
+    sf::Font font;
+    font.loadFromFile("Assets/Fonts/62DRAGZ.otf");
+    sf::Text comboText;
+    comboText.setFont(font);
+    comboText.setString("{This is a test 123}");
+    comboText.setCharacterSize(25);
+    comboText.setFillColor(sf::Color(255,255,255,255));
+
+    sf::Text ultimateText;
+    ultimateText.setFont(font);
+    ultimateText.setString("{Ultimate charge:}");
+    ultimateText.setCharacterSize(25);
+    ultimateText.setFillColor(sf::Color(255, 255, 255, 255));
+
     //turn on antialiasing and create window
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
@@ -45,14 +82,19 @@ int main(int argc, char** argv)
 
     std::vector<GameObject*> gameObjectList;
     
-    sf::Vector2f sizeOfBlock((oWindow.getSize().x / listOfBlock[0].size()-10), (((oWindow.getSize().y / 3) *2)/ listOfBlock.size()-10));
+    if (listOfBlock.size() == 0) {
+        std::cout << "Error: No Blocks in map\n";
+        return -1;
+    }
+
+    sf::Vector2f sizeOfBlock((oWindow.getSize().x / listOfBlock[0].size()-3), (((oWindow.getSize().y / 3) *2)/ listOfBlock.size()-3));
     for (int i = 0; i < listOfBlock.size(); i++)
     {
         for (int j = 0; j < listOfBlock[i].size(); j++) {
             if (listOfBlock[i][j]!=0)
             {
                 Block* blockTest = new Block(sizeOfBlock, &oWindow, listOfBlock[i][j]);
-                blockTest->pos = sf::Vector2f(j*sizeOfBlock.x+10*j+5, i*sizeOfBlock.y+10*i+5);
+                blockTest->pos = sf::Vector2f(j*sizeOfBlock.x+3*j+1, i*sizeOfBlock.y+3*i+3);
                 gameObjectList.push_back(blockTest);
             }
         }
@@ -60,28 +102,27 @@ int main(int argc, char** argv)
 
     GameObject oTopBorder = GameObject("rectangle", sf::Vector2f(oWindow.getSize().x, 1.0f), &oWindow, 0.0f);
     oTopBorder.pos = sf::Vector2f(0, 0);
-
     GameObject oLeftBorder = GameObject("rectangle", sf::Vector2f(1.0f, oWindow.getSize().y), &oWindow, 0.0f);
     oLeftBorder.pos = sf::Vector2f(-1.0f, 0);
-
     GameObject oRightBorder = GameObject("rectangle", sf::Vector2f(1.0f, oWindow.getSize().y), &oWindow, 0.0f);
     oRightBorder.pos = sf::Vector2f(oWindow.getSize().x, 0);
 
     sf::Vector2f canonSize(50, 150);
     Canon canon = Canon(1, canonSize, &oWindow);
     canon.color = sf::Color(100, 125, 255, 255);
-
     sf::Vector2f size2(100, 100);
-    /*GameObject ball("rectangle", size2, &oWindow,1500.0f);
-    ball.color = sf::Color(rand() % 255, rand() % 255, rand() % 255, 255);*/
-
+ 
     InputManager oTestInputManager(&oWindow);
 
     sf::Clock oClock;
     float fDeltaTime;
     fDeltaTime = oClock.restart().asSeconds();
-    float fTimer = 0.0f;
+    float fTimer = 2.0f;
+    float fShootTimer = 0.0f;
     bool canFire = true;
+
+    float combo = 0;
+    float ultimateTime = 3.0f;
 
     //GameLoop
     while (oWindow.isOpen())
@@ -109,25 +150,34 @@ int main(int argc, char** argv)
         //find balls in gameObject list
         for (int i = 0; i < gameObjectList.size(); i++)
         {
-            //std::cout << typeid(&gameObjectList[i]).name() << "\n";
-            //std::cout << typeid(&fakeBall).name() << "\n";
-            /*if (typeid(&gameObjectList[i]).name() == typeid(&fakeBall).name()) {
-                canFire = false;
-            }*/
             if (gameObjectList[i]->shape == "circle") {
                 canFire = false;
                 //its a ball !
             }
         }
+        if (canFire){
+            if(combo>=3)
+                //charge ultimate with combo
+                ultimateTime += combo/10;
+            combo = 0;
+        }
         //Input Manager
         if (oTestInputManager.isMousePressed() == 1 && canFire) {
-            canon.Shoot(&gameObjectList);
+            canon.Shoot(&gameObjectList, false);
         }
-
-
-        if (fTimer >= 0.5f) {
-            
-            fTimer = 0.0f;
+        else if (oTestInputManager.isMousePressed() == 3 && ultimateTime > 0.0f) {
+            if (fShootTimer >= 0.2f) {
+                canon.Shoot(&gameObjectList, true);
+                fShootTimer = 0.0f;
+            }
+            ultimateTime -= fDeltaTime;
+        }
+        
+        if (fTimer >= 2.0f) {
+            if (oTestInputManager.isMousePressed() == 2) {
+                canon.ShootSecondary(&gameObjectList);
+                fTimer = 0.0f;
+            }
         }
         // ===============================
 
@@ -140,7 +190,7 @@ int main(int argc, char** argv)
         canon.LookAt(mouse_pos);
         canon.pos.x = oWindow.getSize().x / 2;
         canon.pos.y = oWindow.getSize().y;
-        //canon.rectangle.setOrigin(canon.size.x / 2, 0);
+        canon.rectangle.setOrigin(canon.size.x / 2, 0);
 
         //update window borders
         oTopBorder.size = sf::Vector2f(oWindow.getSize().x, 1.0f);
@@ -169,10 +219,21 @@ int main(int argc, char** argv)
                     float normDistance = sqrt(fDistance.x * fDistance.x + fDistance.y * fDistance.y);
                     if (normDistance > 0) {
                         //only test collision for balls
-                        if (gameObjectList[i]->shape == "circle" || gameObjectList[j]->shape == "circle") {
-                            if (gameObjectList[i]->AABBCollision(gameObjectList[j]) == 1) {
-                                //Kill blocks below 1HP
+                        if ((gameObjectList[i]->shape == "circle" && gameObjectList[j]->shape != "circle") || (gameObjectList[i]->shape != "circle" && gameObjectList[j]->shape == "circle")) {
+                            int collisionReturn = gameObjectList[i]->AABBCollision(gameObjectList[j]);
+                            switch (collisionReturn)
+                            {
+                            case 1:
                                 gameObjectList.erase(gameObjectList.begin() + i);
+                                break;
+                            case 2:
+                                combo++;
+                                break;
+                            case 3:
+                                combo++;
+                                break;
+                            default:
+                                break;
                             }
                         }
                     }
@@ -185,17 +246,22 @@ int main(int argc, char** argv)
 
         // ===============================
         
-
+		comboText.setString("Combo: " + std::to_string(combo));
+        ultimateText.setString("Ultimate time: " + std::to_string(ultimateTime));
+        ultimateText.setPosition(0, oWindow.getSize().y - 50);
+        writeFile("combo.txt",combo);
         //DRAW ===========================
         oWindow.clear(sf::Color(30,30,45,255));
         oTopBorder.Draw();
         oLeftBorder.Draw();
         oRightBorder.Draw();
-        canon.Draw();
         for (int i = 0; i < gameObjectList.size(); i++)
         {
             gameObjectList[i]->Draw();
         }
+        canon.Draw();
+		oWindow.draw(comboText);
+        oWindow.draw(ultimateText);
         oWindow.display();
         // ===============================
         /*system("cls");
@@ -203,6 +269,7 @@ int main(int argc, char** argv)
         std::cout << "Number of gameOjbects: " << gameObjectList.size()<<"\n";*/
 
         fTimer += fDeltaTime;
+        fShootTimer += fDeltaTime;
         fDeltaTime = oClock.restart().asSeconds();
     }
 

@@ -12,6 +12,8 @@ namespace Math {
 	float degToRad(float degrees);
 	float radToDeg(float radians);
 
+	//float round(float number, int digits=2);
+
 	float getNorm(sf::Vector2f);
 }
 

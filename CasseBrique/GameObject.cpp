@@ -28,6 +28,7 @@ GameObject::GameObject(std::string new_shape, sf::Vector2f new_size, sf::RenderW
 		bounding_box.min = pos;
 		bounding_box.max = posMax;
 	}
+	rectangle.setOrigin(size.x / 2, 0);
 }
 
 int GameObject::Draw() {
