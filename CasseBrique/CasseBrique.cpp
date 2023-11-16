@@ -182,7 +182,7 @@ int main(int argc, char** argv)
 
         std::vector<Ball*> balls = canon.GetBalls();
 
-        if (balls.size()!=0) 
+        if (balls.size()>0) 
         {
             for (int i = 0; i < balls.size(); i++)
             {
@@ -192,12 +192,15 @@ int main(int argc, char** argv)
                 balls[i]->AABBCollision(&oTopBorder);
                 balls[i]->AABBCollision(&oRightBorder);
 
-                for (int i = 0; i < gameObjectList.size(); i++)
+                for (int j = 0; j < gameObjectList.size(); j++)
                 {
-                    balls[i]->AABBCollision(gameObjectList[i]);
+                    balls[i]->AABBCollision(gameObjectList[j]);
+                }
+                if (balls[i]->CheckOutOfBounds()) {
+                    std::cout << "Removing your balls\n";
+                    balls.erase(balls.begin() + i);
                 }
             }
-            
         }
 
         /*
@@ -260,7 +263,7 @@ int main(int argc, char** argv)
             gameObjectList[i]->Draw();
         }
 
-        if (balls.size() != 0)
+        if (balls.size() > 0)
         {
             for (int i = 0; i < balls.size(); i++)
             {

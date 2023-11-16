@@ -44,7 +44,7 @@ void Canon::LookAt(sf::Vector2i mousePos) {
 
 bool Canon::HasBalls()
 {
-	return (balls.size() != 0);
+	return (balls.size() > 0);
 }
 
 void Canon::Shoot(bool rainbow) {
