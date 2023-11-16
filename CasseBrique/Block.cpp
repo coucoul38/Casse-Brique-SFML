@@ -8,10 +8,10 @@ Block::Block(sf::Vector2f new_size, sf::RenderWindow* new_window, int new_HP)
 	switch (HP)
 	{
 	case 9:
-		color = sf::Color(221, 215, 141, 255);
+		color = sf::Color(255, 255, 255, 255);
 		break;
 	case 8:
-		color = sf::Color(30,30,30, 255);
+		color = sf::Color(50,50,50, 255);
 		break;
 	case 7:
 		color = sf::Color(0, 0, 83, 255);
@@ -48,10 +48,10 @@ int Block::onCollisionEnter(AABB a, AABB b) {
 	switch (HP)
 	{
 	case 9:
-		color = sf::Color(221, 215, 141, 255);
+		color = sf::Color(255,255,255, 255);
 		break;
 	case 8:
-		color = sf::Color(30, 30, 30, 255);
+		color = sf::Color(50, 50, 50, 255);
 		break;
 	case 7:
 		color = sf::Color(0, 0, 83, 255);

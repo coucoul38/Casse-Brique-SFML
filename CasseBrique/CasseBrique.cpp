@@ -34,21 +34,19 @@ void writeFile(std::string fileName, int combo) {
     std::fstream myFile;
     myFile.open(fileName, std::ios::out | std::ios::app);
     myFile.close();
-	myFile.open(fileName, std::ios::in | std::ios::out | std::ios::app);/*
+	myFile.open(fileName, std::ios::in | std::ios::out | std::ios::app);
 	std::string line;
     while (std::getline(myFile, line)){
 		if (line.empty()) {
-			myFile.open(fileName, std::ofstream::out | std::ofstream::trunc);
-            myFile.close();
 			myFile << std::to_string(combo);
 		}
 		else if (std::stoi(line) < combo) {
-            myFile.open(fileName, std::ofstream::out | std::ofstream::trunc);
+            std::cout << "new best combo";
             myFile.close();
+            myFile.open(fileName, std::ofstream::out | std::ofstream::trunc);
 			myFile << std::to_string(combo);
 		}
-		myFile.close();
-    }*/
+    }
  myFile.close();
 }
 
@@ -73,10 +71,10 @@ int main(int argc, char** argv)
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
 
-    int fWidth = 800;//sf::VideoMode::getDesktopMode().width
-    int fHeight = 600;//sf::VideoMode::getDesktopMode().height
+    int fWidth = sf::VideoMode::getDesktopMode().width;
+    int fHeight = sf::VideoMode::getDesktopMode().height;
 
-    sf::RenderWindow oWindow(sf::VideoMode(fWidth, fHeight), "SFML");// , sf::Style::Fullscreen, settings);
+    sf::RenderWindow oWindow(sf::VideoMode(fWidth, fHeight), "SFML" , sf::Style::Fullscreen, settings);
 
     std::vector<std::vector<int>> listOfBlock=readFile("level2.txt");
 
@@ -123,6 +121,7 @@ int main(int argc, char** argv)
 
     float combo = 0;
     float ultimateTime = 3.0f;
+
 
     //GameLoop
     while (oWindow.isOpen())
@@ -246,8 +245,8 @@ int main(int argc, char** argv)
 
         // ===============================
         
-		comboText.setString("Combo: " + std::to_string(combo));
-        ultimateText.setString("Ultimate time: " + std::to_string(ultimateTime));
+		comboText.setString("{Combo: " + std::to_string(combo)+"]");
+        ultimateText.setString("{Ultimate " + std::to_string(ultimateTime)+"]");
         ultimateText.setPosition(0, oWindow.getSize().y - 50);
         writeFile("combo.txt",combo);
         //DRAW ===========================
