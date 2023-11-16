@@ -8,6 +8,8 @@
 #include <fstream>
 #include "Ball.h"
 #include <typeinfo>
+#include <vector>
+#include <algorithm>
 
 
 std::vector<std::vector<int>> readFile(std::string fileName) {
@@ -186,6 +188,7 @@ int main(int argc, char** argv)
         {
             for (int i = 0; i < balls.size(); i++)
             {
+                //std::cout << balls[i];
                 balls[i]->Move(fDeltaTime);
 
                 balls[i]->AABBCollision(&oLeftBorder);
@@ -194,12 +197,33 @@ int main(int argc, char** argv)
 
                 for (int j = 0; j < gameObjectList.size(); j++)
                 {
-                    balls[i]->AABBCollision(gameObjectList[j]);
+                    int collisionReturn = balls[i]->AABBCollision(gameObjectList[j]);
+                    switch (collisionReturn)
+                    {
+                    case 1:
+                        gameObjectList.erase (gameObjectList.begin() + i);
+                        break;
+                    case 2:
+                        combo++;
+                        break;
+                    case 3:
+                        combo++;
+                        break;
+                    default:
+                        break;
+                    }
                 }
-                if (balls[i]->CheckOutOfBounds()) {
-                    std::cout << "Removing your balls\n";
-                    balls.erase(balls.begin() + i);
-                }
+            }
+        }
+
+        for (int i = 0; i < balls.size();)
+        {
+            if (balls[i]->CheckOutOfBounds()) {
+                std::cout << balls.size()<< "i: "<<i<<"\n";//"Removing your ball\n";
+                balls.erase(balls.begin() + 0);
+            }
+            else {
+                i++;
             }
         }
 
@@ -262,14 +286,11 @@ int main(int argc, char** argv)
         {
             gameObjectList[i]->Draw();
         }
-
-        if (balls.size() > 0)
+        for (int i = 0; i < balls.size(); i++)
         {
-            for (int i = 0; i < balls.size(); i++)
-            {
-                balls[i]->Draw();
-            }
+            balls[i]->Draw();
         }
+        /*if (balls.size() > 0){}*/
 
         canon.Draw();
 		oWindow.draw(comboText);
