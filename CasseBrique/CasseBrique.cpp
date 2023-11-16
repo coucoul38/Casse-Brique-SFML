@@ -9,6 +9,8 @@
 #include "Ball.h"
 #include <typeinfo>
 #include <string>
+#include <iomanip>
+#include <sstream>
 
 
 std::vector<std::vector<int>> readFile(std::string fileName) {
@@ -124,7 +126,7 @@ int main(int argc, char** argv)
         }
     }
 
-    GameObject oTopBorder = GameObject(0.f, 0.f, oWindow.getSize().x, 1.0f, 0.f, &oWindow);
+    GameObject oTopBorder = GameObject(0.f, -1.0f, oWindow.getSize().x, 1.0f, 0.f, &oWindow);
     GameObject oLeftBorder = GameObject(-1.0f, 0, 1.0f, oWindow.getSize().y,0.f, &oWindow);
     GameObject oRightBorder = GameObject(oWindow.getSize().x, 0.f, 1.0f, oWindow.getSize().y, 0.f, &oWindow);
 
@@ -251,60 +253,22 @@ int main(int argc, char** argv)
                 i++;
             }
         }
-
-        /*
-        for (int i = 0; i < gameObjectList.size(); i++)
-        {
-            gameObjectList[i]->Move(fDeltaTime);
-
-            //COLLISIONS
-            gameObjectList[i]->AABBCollision(&oLeftBorder);
-            gameObjectList[i]->AABBCollision(&oTopBorder);
-            gameObjectList[i]->AABBCollision(&oRightBorder);
-            oRightBorder.AABBCollision(gameObjectList[i]);
-
-
-            for (int j = 0; j < gameObjectList.size(); j++) {
-                if (j != i) {
-                    sf::Vector2f fDistance(gameObjectList[i]->pos.x - gameObjectList[j]->pos.x, gameObjectList[i]->pos.y - gameObjectList[j]->pos.y);
-                    float normDistance = sqrt(fDistance.x * fDistance.x + fDistance.y * fDistance.y);
-                    if (normDistance > 0) {
-                        //only test collision for balls
-                        if ((gameObjectList[i]->shape == "circle" && gameObjectList[j]->shape != "circle") || (gameObjectList[i]->shape != "circle" && gameObjectList[j]->shape == "circle")) {
-                            int collisionReturn = gameObjectList[i]->AABBCollision(gameObjectList[j]);
-                            switch (collisionReturn)
-                            {
-                            case 1:
-                                gameObjectList.erase(gameObjectList.begin() + i);
-                                break;
-                            case 2:
-                                combo++;
-                                break;
-                            case 3:
-                                combo++;
-                                break;
-                            default:
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-            if (gameObjectList[i]->CheckOutOfBounds()) {
-                gameObjectList.erase(gameObjectList.begin() + i);
-            }
-            
-        }*/
-
         // ===============================
         
-		comboText.setString("{Combo: " + std::to_string(combo)+"]");
-        ultimateText.setString("{Ultimate " + std::to_string(ultimateTime)+"]");
-        ultimateText.setPosition(0, oWindow.getSize().y - 50);
-	maxCombo.setString("{Max Combo " + readBestCombo("Combo.txt") + "]");
-        maxCombo.setPosition(0, oWindow.getSize().y - 100);
-        writeFile("combo.txt",combo);
+		
         //DRAW ===========================
+        std::ostringstream comboOut;
+        comboOut << std::setprecision(0) << std::fixed << combo;
+        std::ostringstream ultiOut;
+        ultiOut << std::setprecision(1) << std::fixed << ultimateTime;
+        comboText.setString("{Combo: " + comboOut.str() + "]");
+        comboText.setPosition(10, oWindow.getSize().y-100);
+        ultimateText.setString("{Ultimate " + ultiOut.str() + "]");
+        ultimateText.setPosition(oWindow.getSize().x-360, oWindow.getSize().y - 50);
+        maxCombo.setString("{Max Combo " + readBestCombo("Combo.txt") + "]");
+        maxCombo.setPosition(10, oWindow.getSize().y - 50);
+        writeFile("combo.txt", combo);
+
         oWindow.clear(sf::Color(30,30,45,255));
         oTopBorder.Draw();
         oLeftBorder.Draw();
@@ -320,8 +284,8 @@ int main(int argc, char** argv)
         /*if (balls.size() > 0){}*/
 
         canon.Draw();
-	oWindow.draw(comboText);
-	oWindow.draw(maxCombo);
+	    oWindow.draw(comboText);
+	    oWindow.draw(maxCombo);
         oWindow.draw(ultimateText);
         oWindow.display();
         // ===============================

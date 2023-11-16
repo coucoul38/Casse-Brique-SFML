@@ -17,7 +17,7 @@ void Block::setHP( int HP )
 		setColor( sf::Color(255, 255, 255, 255) );
 		break;
 	case 8:
-		setColor(sf::Color(50, 50, 50, 255) );
+		setColor(sf::Color(0,0,255, 255) );
 		break;
 	case 7:
 		setColor(sf::Color(0, 0, 83, 255) );

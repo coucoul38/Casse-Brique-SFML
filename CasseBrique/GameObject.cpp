@@ -18,7 +18,7 @@ GameObject::GameObject(float x, float y, float width, float height, float speed,
 
 	m_window = window;
 
-	setPosition(x, y);
+	setPosition(x, y,0,0);
 }
 
 GameObject::GameObject(float x, float y, float radius, float speed, sf::RenderWindow* window)

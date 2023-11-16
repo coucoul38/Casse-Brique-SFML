@@ -64,5 +64,9 @@
     <Text Include="combo.txt">
       <Filter>Fichiers sources</Filter>
     </Text>
+    <Text Include="level1.txt">
+      <Filter>Fichiers sources</Filter>
+    </Text>
+    <Text Include="level0.txt" />
   </ItemGroup>
 </Project>

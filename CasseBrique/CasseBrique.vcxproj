@@ -148,6 +148,8 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="combo.txt" />
+    <Text Include="level0.txt" />
+    <Text Include="level1.txt" />
     <Text Include="level2.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
