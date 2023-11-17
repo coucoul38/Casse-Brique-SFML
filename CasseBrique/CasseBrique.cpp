@@ -215,8 +215,17 @@ int main(int argc, char** argv)
                 balls[i]->AABBCollision(&oTopBorder);
                 balls[i]->AABBCollision(&oRightBorder);
 
+                //COLLISION WITH OTHER BALLS
+                for (int k = 0; k < balls.size(); k++)
+                {
+                    if(i!=k)
+                        balls[i]->AABBCollision(balls[k]);
+                }
+
+                //COLLISION WITH BLOCK
                 for (int j = 0; j < gameObjectList.size(); j++)
                 {
+                    
                     int collisionReturn = balls[i]->AABBCollision(gameObjectList[j]);
                     switch (collisionReturn)
                     {
